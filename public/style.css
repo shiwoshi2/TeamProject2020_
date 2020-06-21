@@ -1,0 +1,76 @@
+#sketchpad{
+    /*position: fixed;*/
+    width: 100%;
+    height: 100%;
+    background-image:url(images/grid.png);
+  }
+  
+ 
+.navbar{
+    width: fit-content;
+    height: fit-content;
+   
+}
+
+.navbutton {
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin: 0px;
+/* border: 2px solid black; */
+}
+
+.navspan {
+    
+    width: 50px;  
+    height: 50px;
+   float: left;
+    
+}
+.custombutton{
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+    margin: 0px;
+    
+}
+
+.popupbutton {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 2px;
+    margin: 0px;
+}
+
+
+
+
+.customnav {
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+.dropdown-menu {
+    width:fit-content;
+    min-width: 54px;
+    height: fit-content; 
+    padding-bottom: 5px;
+    padding-top: 5px;
+    
+}
+
+li {
+margin-left: 1px;
+margin-right: 1px;
+}
+
+form {
+    margin-bottom: 0px;
+}
+
+
+
+
