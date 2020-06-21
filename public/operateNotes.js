@@ -128,6 +128,7 @@ function mousedownHandler(e) {
     if (e.target.className == 'noteTitle') {
         //locate the note
         dragObj = e.target.parentNode;
+        e.preventDefault();
 
 
         var t = dragObj.style.top;
@@ -135,19 +136,14 @@ function mousedownHandler(e) {
         z += 1;
         dragObj.setAttribute("style", "top:" + t + ";left:" + l + ";z-index:" + z);
 
-        _startX = e.clientX;
-        _startY = e.clientY;
+        _startX = e.targetTouches[0].clientX;
+        _startY = e.targetTouches[0].clientY;
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
 
-        document.addEventListener("mousemove", mousemoveHandler, false);
-        console.log("title---------------");
-        console.log(e.clientX);
-        console.log(e.clientY);
-        console.log(_offsetX);
-        console.log(_offsetY);
-        console.log(dragObj.style.left);
-        console.log(dragObj.style.top);
+        document.addEventListener("touchmove", mousemoveHandler, false);
+        //dierctly way to do
+        $('html,body').css('height', '100%').css('overflow', 'hidden');
 
     }
     if (e.target.className == "noteContent") {
@@ -323,11 +319,17 @@ function link(idArray) {
 
 }
 function mouseupHandler(e) {
-    document.removeEventListener("mousemove", mousemoveHandler, false);
+    //after moving it will save the note automatically
+    $('html,body').removeAttr('style');
+    document.removeEventListener("touchmove", mousemoveHandler, false);
+    saveNote(e.target.parentNode.id);
+
 }
 function mousemoveHandler(e) {
-    dragObj.style.left = (_offsetX + e.clientX - _startX) + 'px';
-    dragObj.style.top = (_offsetY + e.clientY - _startY) + 'px';
+    // for page not moving when moving the note
+    e.preventDefault();
+    dragObj.style.left = (_offsetX + e.targetTouches[0].clientX - _startX) + 'px';
+    dragObj.style.top = (_offsetY + e.targetTouches[0].clientY - _startY) + 'px';
 
 }
 
@@ -362,8 +364,8 @@ function init() {
 
     loadData();
     // Add event listeners
-    document.addEventListener("mousedown", mousedownHandler, false);
-    document.addEventListener("mouseup", mouseupHandler, false);
+    document.addEventListener("touchstart", mousedownHandler, false);
+    document.addEventListener("touchend", mouseupHandler, false);
 }
 
 
