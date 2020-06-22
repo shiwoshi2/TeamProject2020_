@@ -516,15 +516,13 @@ function clusterColorStickies() {
     }
 }
 
-
 function searchSticky() {
 
-
-    var h = window.screen.height - 300;
-    var w = window.screen.width - 300;
+    var h = window.screen.height - 280;
+    var w = window.screen.width - 500;
     var input = document.createElement("input");
     input.setAttribute("id", "tbInputText");
-
+    input.setAttribute("placeholder", "Search text here!");
     input.type = 'text';
     input.style.position = 'fixed';
     input.style.left = w + "px";
@@ -563,7 +561,7 @@ function move_position_sticky(search_text) {
         var value = JSON.parse(values);
 
 
-        var str1 = value[0]["text"]; // Text in stickies
+        var str1 = value[0].text; // Text in stickies
         var n = str1.search(new RegExp(search_text, "i"));
         if (n != -1) {
             original_x = value[0].notePositionLeft;
@@ -576,6 +574,19 @@ function move_position_sticky(search_text) {
         var width = window.screen.width - 300;
         document.getElementById(key).style.top = height + "px";
         document.getElementById(key).style.left = width + "px";
+        var sticky = document.getElementById(key);
+        sticky.addEventListener('keydown', function (event) {
+            if (event.keyCode == 13) {
+                sticky_position_change(key, original_x, original_y);
+            }
+        });
     }
 
+
+}
+
+function sticky_position_change(key,new_x, new_y){
+    document.getElementById(key).style.left = new_x + "px";
+    document.getElementById(key).style.top = new_y + "px";
+    saveNote(key);
 }
