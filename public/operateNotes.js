@@ -99,18 +99,25 @@ function addNote(key = 0, values = []) {
 
     //second only text input editable
     var contentDiv = document.createElement("div");
-    if (values[0]['text']) {
-        var txtDiv = document.createTextNode(values[0]['text']);
-        contentDiv.appendChild(txtDiv);
-    }
+    contentDiv.innerText = values[0]['text'];
     contentDiv.setAttribute("class", "noteContent");
-    contentDiv.setAttribute("contenteditable", "true");
 
+    contentDiv.setAttribute("contenteditable", "true");
     contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
+    var inputLimit = 50;
+
+    // var intNum = document.createElement("div");
+    var numSpan = document.createElement("span");
+    numSpan.setAttribute("class","counter");
+    numSpan.innerText = "0/"+inputLimit;
+
+
 
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
+    mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
+    limitInput(contentDiv,inputLimit);
 }
 
 // Move the note
@@ -121,6 +128,73 @@ var _offsetX = 0;
 var _offsetY = 0;
 var z = 0;
 var noteLocation;
+
+
+function limitInput(noteContent,length=10) {
+    var counter = noteContent.parentNode.childNodes[2];
+    input = noteContent;
+
+    settings = {
+        maxLen: length,
+    }
+
+    keys = {
+        'backspace': 8,
+        'shift': 16,
+        'ctrl': 17,
+        'alt': 18,
+        'delete': 46,
+        // 'cmd':
+        'leftArrow': 37,
+        'upArrow': 38,
+        'rightArrow': 39,
+        'downArrow': 40,
+    }
+
+    utils = {
+        special: {},
+        navigational: {},
+        isSpecial(e) {
+            return typeof this.special[e.keyCode] !== 'undefined';
+        },
+        isNavigational(e) {
+            return typeof this.navigational[e.keyCode] !== 'undefined';
+        }
+    }
+
+    utils.special[keys['backspace']] = true;
+    utils.special[keys['shift']] = true;
+    utils.special[keys['ctrl']] = true;
+    utils.special[keys['alt']] = true;
+    utils.special[keys['delete']] = true;
+
+    utils.navigational[keys['upArrow']] = true;
+    utils.navigational[keys['downArrow']] = true;
+    utils.navigational[keys['leftArrow']] = true;
+    utils.navigational[keys['rightArrow']] = true;
+
+    input.addEventListener('keydown', function(event) {
+        let len = event.target.innerText.trim().length;
+        hasSelection = false;
+        selection = window.getSelection();
+        isSpecial = utils.isSpecial(event);
+        isNavigational = utils.isNavigational(event);
+        counter.innerHTML = len+"/"+length;
+        if (selection) {
+            hasSelection = !!selection.toString();
+        }
+
+        if (isSpecial || isNavigational) {
+            return true;
+        }
+
+        if (len >= settings.maxLen && !hasSelection) {
+            event.preventDefault();
+            return false;
+        }
+
+    });
+}
 
 function mousedownHandler(e) {
 
@@ -229,15 +303,7 @@ function saveNote(key) {
     //array for text input lists
     var textValueList = [];
     //array for text svg as x,y,and textcontent
-
-    console.log(obj.childNodes[1].firstChild);
-    console.log(obj.childNodes[1].firstChild.textContent);
-    if (obj.childNodes[1].firstChild == null) {
-        var text = document.createTextNode(" ");
-        text.textContent = " ";
-        obj.childNodes[1].appendChild(text);
-    }
-    value['text'] = obj.childNodes[1].firstChild.textContent;
+    value['text'] = (obj.childNodes[1].innerText);
 
     var color = obj.firstElementChild.childNodes[2];
     var selectedColor = color.options[color.options.selectedIndex].value;

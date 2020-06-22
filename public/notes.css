@@ -43,11 +43,19 @@
     
 }
 
-
+.counter {
+    float: right;
+    color: #657786;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: right;
+    user-select: none;
+}
 .noteContent {
     position: absolute;
     z-index: -1;
-
+    white-space: pre-line;
+    white-space: pre-wrap;
     width: 180px;
     height: 140px;
     padding: 5px 10px 5px 10px;
