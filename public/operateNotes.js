@@ -105,6 +105,15 @@ function addNote(key = 0, values = []) {
     penInput.setAttribute("onclick", "penInput('" + id + "')");
     titleDiv.appendChild(penInput);
 
+    var rotateNote = document.createElement("img");
+    rotateNote.setAttribute("src", "images/icon-save.png");
+    rotateNote.setAttribute("class", "rotateNote");
+
+    // Add note
+    //rotateNote.setAttribute("onclick", "rotateNote('" + id + "')");
+    //rotateNote.addEventListener("touchstart",rotateNote(id));
+    titleDiv.appendChild(rotateNote);
+
     //second only text input editable
     var contentDiv = document.createElement("div");
     // if (values[0]['text']) {
@@ -139,6 +148,10 @@ var _offsetX = 0;
 var _offsetY = 0;
 var z = 0;
 var noteLocation;
+
+function rotateNote(id){
+
+}
 
 function limitInput(noteContent,length=10) {
     var counter = noteContent.parentNode.childNodes[2];
@@ -210,25 +223,20 @@ function mousedownHandler(e) {
     if (e.target.className == 'noteTitle') {
         //locate the note
         dragObj = e.target.parentNode;
-
         var t = dragObj.style.top;
         var l = dragObj.style.left;
         z += 1;
         dragObj.setAttribute("style", "top:" + t + ";left:" + l + ";z-index:" + z);
-
         _startX = e.targetTouches[0].clientX;
         _startY = e.targetTouches[0].clientY;
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
-
-
         document.addEventListener("touchmove", mousemoveHandler, false);
         //dierctly way to do
         $('html,body').css('height', '100%').css('overflow', 'hidden');
     }
     if (e.target.className == "noteContent") {
         console.log("notecontent touched");
-        textObj = e.target;
     }
     if(e.target.getAttribute("class") == 'svgContent'){
 
@@ -274,6 +282,39 @@ function mousedownHandler(e) {
             }
             svgContent.addEventListener('touchmove', touchMove);
             svgContent.addEventListener('touchend', touchEnd);
+        });
+    }
+
+    if(e.target.className == 'rotateNote'){
+        //source https://stackoverflow.com/questions/11051676/rotating-div-with-mouse-move
+        //console.log("rotate");
+        var noteId = e.target.parentNode.parentNode.getAttribute("id");
+        var obj = document.getElementById(noteId);
+        //obj.style.transform = "rotate(90deg)";
+        //as width = 180, width = 170
+        var rotateButton = obj.childNodes[0].childNodes[5];
+        rotateButton.addEventListener("touchstart",function(e){
+            e.preventDefault();
+            var center_x =(obj.offsetLeft)+(90);
+            var center_y = (obj.offsetTop)+ (85);
+            // var touch_x = e.targetTouches[0].pageX;
+            // var touch_y = e.targetTouches[0].pageY;
+            function touchMove(e)
+            {
+
+                var touch_x = e.targetTouches[0].clientX;
+                var touch_y = e.targetTouches[0].clientY;
+                var radians = Math.atan2(touch_x - center_x, touch_y - center_y);
+                var degree = (radians * (180 / Math.PI) * -1) + 120;
+                obj.style.transform = 'rotate(' + degree + 'deg)';
+            }
+            function touchEnd(e)
+            {
+                rotateButton.removeEventListener('touchmove', touchMove);
+                rotateButton.removeEventListener('touchend', touchEnd);
+            }
+            rotateButton.addEventListener('touchmove', touchMove);
+            rotateButton.addEventListener('touchend', touchEnd);
         });
     }
 }

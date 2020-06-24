@@ -53,6 +53,17 @@
     height: 28px;
 
 }
+.rotateNote {
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: black;
+
+    width: 28px;
+    height: 28px;
+
+}
 .counter {
     float: right;
     color: #657786;
