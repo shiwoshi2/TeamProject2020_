@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+    <script src="svg.draw.js"></script>
+    <script>
+        var drawing = SVG('myDrawing');
+        var rect = drawing.rect();
+
+        drawing.on('mousedown', function(event){
+            console.log("where");
+        });
+        drawing.on('mouseup', function(event){
+            console.log("where");
+        });
+    </script>
+</head>
+<body>
+    <div id="drawing"></div>
+</body>
+</html>
