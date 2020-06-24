@@ -42,7 +42,17 @@
     opacity: 1;*/
     
 }
+.penInput {
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
 
+    width: 28px;
+    height: 28px;
+
+}
 .counter {
     float: right;
     color: #657786;

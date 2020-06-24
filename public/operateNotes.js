@@ -83,10 +83,11 @@ function addNote(key = 0, values = []) {
     colorBg.options.add(new Option("", "#FFCCCC"));
     colorBg.options.add(new Option("", "#99CCFF"));
     colorBg.options.add(new Option("", "#FFFFCC"));
-    colorBg.setAttribute("onclick", "changeColor('" + id + "')");
     if (values[0]['color']) {
         mainDiv.style.backgroundColor = values[0]['color'];
     }
+    colorBg.setAttribute("onclick", "changeColor('" + id + "')");
+
     titleDiv.appendChild(colorBg);
 
     // Save button
@@ -96,6 +97,13 @@ function addNote(key = 0, values = []) {
     // Add note
     saveImg.setAttribute("onclick", "saveNote('" + id + "')");
     titleDiv.appendChild(saveImg);
+    // pen input
+    var penInput = document.createElement("img");
+    penInput.setAttribute("src", "images/icon-save.png");
+    penInput.setAttribute("class", "penInput");
+    // Add note
+    penInput.setAttribute("onclick", "penInput('" + id + "')");
+    titleDiv.appendChild(penInput);
 
     //second only text input editable
     var contentDiv = document.createElement("div");
@@ -221,61 +229,107 @@ function mousedownHandler(e) {
         console.log("notecontent touched");
         textObj = e.target;
     }
+    if(e.target.getAttribute("class") == 'svgContent'){
+
+
+        // //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
+        var noteId = e.target.parentElement.parentElement.getAttribute("id");
+        var svgContent  = document.getElementById(noteId).childNodes[1].firstChild;
+
+        noteLocation = svgContent.parentElement.parentElement;
+        var noteL = Number(noteLocation.style.left.replace("px","" ));
+        var noteT = Number(noteLocation.style.top.replace("px","" ));
+        //idk why this note works
+        //var titleHeight = Number(document.querySelector('.noteTitle').style.height.replace("px","" ));
+        //console.log(document.querySelector('.noteTitle').style);
+        titleHeight = 28;
+        noteT = noteT + titleHeight;
+
+        svgContent.addEventListener("touchstart",function(e)
+        {
+            e.preventDefault();
+            var pathElement = document.createElementNS(svgNS,"path");
+            var x = e.targetTouches[0].clientX- noteL;
+
+            var y = e.targetTouches[0].clientY - noteT;
+            pathElement.setAttribute("d","M"+x+','+y+'L'+x+','+y);
+            pathElement.setAttribute('stroke', 'black');
+            pathElement.setAttribute('fill', 'none');
+            //console.log("svgtouched");
+
+            function touchMove(e)
+            {
+
+                var x = e.targetTouches[0].clientX- noteL;
+                var y = e.targetTouches[0].clientY - noteT;
+                pathElement.setAttribute("d",pathElement.getAttribute('d')
+                        +' '+x+','+y);
+                svgContent.appendChild(pathElement);
+            }
+            function touchEnd(e)
+            {
+                svgContent.removeEventListener('touchmove', touchMove);
+                svgContent.removeEventListener('touchend', touchEnd);
+            }
+            svgContent.addEventListener('touchmove', touchMove);
+            svgContent.addEventListener('touchend', touchEnd);
+        });
+    }
 }
 
 // Anke Lehmann's code
-function addTextInput(svgTxtElement, svgContent, x, y) {
-    // when text input flag triggered
-    var input = document.createElement("input");
-    input.setAttribute("id", "tbInputText");
-
-    input.type = 'text';
-    input.style.position = 'fixed';
-    input.style.left = (x - 4) + "px";
-    input.style.top = (y - 4) + "px";
-    input.style.width = 100 + "px";
-    input.style.height = 20 + "px";
-    input.style.backgroundColor = "blue";
-    input.style.zIndex = "10";
-    input.setAttribute("onblur", "removeInput()");
-    input.setAttribute("onmousemove", "this.focus()");
-
-    var textFlag = false;
-    if (svgTxtElement.textContent != '') {
-        input.value = svgTxtElement.textContent;
-        textFlag = true;
-    }
-    if (textInputFlag == false) {
-        textInputFlag = true;
-        document.body.appendChild(input);
-        input.addEventListener('keydown', function (event) {
-            if (event.keyCode == 13) {
-                console.log("keydown");
-                svgTxtElement.textContent = document.getElementById('tbInputText').value;
-                if (!textFlag) {
-                    svgContent.appendChild(svgTxtElement);
-                } else {
-                    svgText.textContent = document.getElementById('tbInputText').value;
-                }
-                svgTxtElement = '';
-                document.getElementById("tbInputText").remove();
-                textInputFlag = false;
-                //init();
-            }
-
-            if (event.keyCode == 27) {
-                //init();
-                svgTxtElement = '';
-                document.getElementById("tbInputText").remove();
-                textInputFlag = false;
-            }
-
-        });
-
-    }
-
-
-}
+// function addTextInput(svgTxtElement, svgContent, x, y) {
+//     // when text input flag triggered
+//     var input = document.createElement("input");
+//     input.setAttribute("id", "tbInputText");
+//
+//     input.type = 'text';
+//     input.style.position = 'fixed';
+//     input.style.left = (x ) + "px";
+//     input.style.top = (y ) + "px";
+//     input.style.width = 100 + "px";
+//     input.style.height = 20 + "px";
+//     input.style.backgroundColor = "blue";
+//     input.style.zIndex = "10";
+//     input.setAttribute("onblur", "removeInput()");
+//     input.setAttribute("onmousemove", "this.focus()");
+//
+//     var textFlag = false;
+//     if (svgTxtElement.textContent != '') {
+//         input.value = svgTxtElement.textContent;
+//         textFlag = true;
+//     }
+//     if (textInputFlag == false) {
+//         textInputFlag = true;
+//         document.body.appendChild(input);
+//         input.addEventListener('keydown', function (event) {
+//             if (event.keyCode == 13) {
+//                 console.log("keydown");
+//                 svgTxtElement.textContent = document.getElementById('tbInputText').value;
+//                 if (!textFlag) {
+//                     svgContent.appendChild(svgTxtElement);
+//                 } else {
+//                     svgText.textContent = document.getElementById('tbInputText').value;
+//                 }
+//                 svgTxtElement = '';
+//                 document.getElementById("tbInputText").remove();
+//                 textInputFlag = false;
+//                 //init();
+//             }
+//
+//             if (event.keyCode == 27) {
+//                 //init();
+//                 svgTxtElement = '';
+//                 document.getElementById("tbInputText").remove();
+//                 textInputFlag = false;
+//             }
+//
+//         });
+//
+//     }
+//
+//
+// }
 
 function removeInput() {
     if (!(document.getElementById("tbInputText").value)) {
@@ -284,7 +338,26 @@ function removeInput() {
     }
 
 }
-
+//store note
+function penInput(key) {
+    //switch container to svg
+    //locate mainDiv
+    var obj = document.getElementById(key);
+    var nodeName = obj.childNodes[1].nodeName;
+    if(nodeName == "DIV"){
+        console.log("switch to svg now");
+        obj.childNodes[1].innerText = "";
+        obj.childNodes[1].setAttribute("contenteditable", "true");
+        //var contentDiv = document.createElement("div");
+        var contentSvg = document.createElementNS(svgNS,"svg");
+        contentSvg.setAttribute("class","svgContent");
+        contentSvg.setAttribute("id","svgContent");
+        contentSvg.style.width = "100%";
+        contentSvg.style.height = "100%";
+        obj.childNodes[1].appendChild(contentSvg);
+        obj.removeChild(obj.childNodes[2]);
+    }
+}
 //store note
 function saveNote(key) {
 
@@ -358,6 +431,7 @@ function deleteNotesAll() {
 function changeColor(id) {
     var obj = document.getElementById(id);
     var color = obj.firstElementChild.childNodes[2];
+
     //just a guessing
     var selectedColor = color.options[color.options.selectedIndex].value;
 
@@ -391,6 +465,7 @@ function mouseupHandler(e) {
 function mousemoveHandler(e) {
     // // for page not moving when moving the note
     // e.preventDefault();
+    ///console.log(e.changedTouches);
     dragObj.style.left = (_offsetX + e.targetTouches[0].clientX - _startX) + 'px';
     dragObj.style.top = (_offsetY + e.targetTouches[0].clientY - _startY) + 'px';
     // dragObj.style.left = (_offsetX + e.clientX - _startX) + 'px';	    // for page not moving when moving the note
@@ -537,12 +612,13 @@ function searchSticky() {
             console.log("keydown");
             search_text = document.getElementById('tbInputText').value;
             document.getElementById("tbInputText").remove();
+            move_position_sticky(search_text);
         }
         if (event.keyCode == 27) {
             document.getElementById("tbInputText").remove();
         }
 
-        move_position_sticky(search_text);
+
 
     });
 
