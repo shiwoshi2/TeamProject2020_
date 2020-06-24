@@ -221,6 +221,7 @@ function mousedownHandler(e) {
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
 
+
         document.addEventListener("touchmove", mousemoveHandler, false);
         //dierctly way to do
         $('html,body').css('height', '100%').css('overflow', 'hidden');
