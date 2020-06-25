@@ -108,9 +108,9 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(rotateNote);
     //clear button
     var clear = document.createElement("img");
-    //clear.setAttribute("src", "images/icon-pen.png");
+    clear.setAttribute("src", "images/icon-pen.png");
     clear.setAttribute("class", "clear");
-    clear.setAttribute("onclick", "clear('" + id + "')");
+    clear.setAttribute("onclick", "clearContent('" + id + "')");
     titleDiv.appendChild(clear);
 
     var contentDiv = createTextContent(values[0]['text'],id,"true");
@@ -371,14 +371,14 @@ function mousedownHandler(e) {
 //
 // }
 //store note
-function clear(key) {
+function clearContent(key) {
     console.log("clear");
     var obj = document.getElementById(key);
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         obj.childNodes[1].innerText = "";
     }else {
-        obj.childNodes[1].firstChild.innerText = "";
+        obj.childNodes[1].firstChild.remove(obj.childNodes[1].firstChild.childNodes);
     }
 }
 function penInput(key) {
