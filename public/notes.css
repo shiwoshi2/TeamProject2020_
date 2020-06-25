@@ -53,6 +53,17 @@
     height: 28px;
 
 }
+.clear {
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: black;
+
+    width: 10px;
+    height: 28px;
+
+}
 .rotateNote {
     border: none;
     appearance: none;

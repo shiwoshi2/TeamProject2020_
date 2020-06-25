@@ -1,10 +1,12 @@
 var divTop = 50;
 var divLeft = 0;
 var k = 0;
-var textInputFlag = false;
-
+var inputLimit = 50;
+var tempData = {};
+var tempPenData = {};
 // Add sticky note
 function addNote(key = 0, values = []) {
+    textInputFlag = true;
     var id;
     if (key != 0) {
         id = key;
@@ -26,24 +28,19 @@ function addNote(key = 0, values = []) {
     }
 
     if (values.length == 0) {
-        //for svg initial
-        // let textInitial = [];
-        // let text = [];
-        //
-        // textInitial.push(0);
-        // textInitial.push(0);
-        // textInitial.push(" ");
-        //
-        // text.push(textInitial);
+
         var values = [];
         var initValue = {};
         initValue['text'] = "";
         initValue['color'] = '#CCFFCC';
         initValue['notePositionLeft'] = divLeft;
         initValue['notePositionTop'] = divTop;
+        initValue['pen'] = "";
         values.push(initValue);
     }
 
+
+    tempPenData[id] = values[0]['pen'];
     // Add the note Main content
     var mainDiv = document.createElement("div");
     mainDiv.setAttribute("class", "note");
@@ -108,31 +105,16 @@ function addNote(key = 0, values = []) {
     var rotateNote = document.createElement("img");
     rotateNote.setAttribute("src", "images/icon-rotate.png");
     rotateNote.setAttribute("class", "rotateNote");
-
-    // Add note
-    //rotateNote.setAttribute("onclick", "rotateNote('" + id + "')");
-    //rotateNote.addEventListener("touchstart",rotateNote(id));
     titleDiv.appendChild(rotateNote);
+    //clear button
+    var clear = document.createElement("img");
+    //clear.setAttribute("src", "images/icon-pen.png");
+    clear.setAttribute("class", "clear");
+    clear.setAttribute("onclick", "clear('" + id + "')");
+    titleDiv.appendChild(clear);
 
-    //second only text input editable
-    var contentDiv = document.createElement("div");
-    // if (values[0]['text']) {
-    //     var txtDiv = document.createTextNode(values[0]['text']);
-    //     contentDiv.appendChild(txtDiv);
-    // }
-    contentDiv.innerText = values[0]['text'];
-
-    contentDiv.setAttribute("class", "noteContent");
-    contentDiv.setAttribute("contenteditable", "true");
-
-    contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
-
-    var inputLimit = 50;
-    // var intNum = document.createElement("div");
-    var numSpan = document.createElement("span");
-    numSpan.setAttribute("class","counter");
-    numSpan.innerText = values[0]["text"].length+"/"+inputLimit;
-
+    var contentDiv = createTextContent(values[0]['text'],id,"true");
+    var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
     mainDiv.appendChild(numSpan);
@@ -148,12 +130,26 @@ var _offsetX = 0;
 var _offsetY = 0;
 var z = 0;
 var noteLocation;
-
-function rotateNote(id){
-
+function createNumSpan(text,inputLimit) {
+    // var intNum = document.createElement("div");
+    var numSpan = document.createElement("span");
+    numSpan.setAttribute("class","counter");
+    numSpan.innerText = text.length+"/"+inputLimit;
+    return numSpan;
+}
+function createTextContent(text,id,isText){
+    // only text input editable
+    var contentDiv = document.createElement("div");
+    contentDiv.innerText = text;
+    contentDiv.setAttribute("class", "noteContent");
+    contentDiv.setAttribute("contenteditable", "true");
+    contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
+    contentDiv.setAttribute("textInput",isText);
+    return contentDiv;
 }
 
 function limitInput(noteContent,length=10) {
+    //reference source https://codepen.io/ramonsenadev/pen/jywRQg by 25.06.2020
     var counter = noteContent.parentNode.childNodes[2];
     input = noteContent;
     settings = {
@@ -239,24 +235,19 @@ function mousedownHandler(e) {
         console.log("notecontent touched");
     }
     if(e.target.getAttribute("class") == 'svgContent'){
-
-
         // //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
+
         var noteId = e.target.parentElement.parentElement.getAttribute("id");
         var svgContent  = document.getElementById(noteId).childNodes[1].firstChild;
-
         noteLocation = svgContent.parentElement.parentElement;
         var noteL = Number(noteLocation.style.left.replace("px","" ));
         var noteT = Number(noteLocation.style.top.replace("px","" ));
-        //idk why this note works
-        //var titleHeight = Number(document.querySelector('.noteTitle').style.height.replace("px","" ));
-        //console.log(document.querySelector('.noteTitle').style);
         titleHeight = 28;
         noteT = noteT + titleHeight;
-
-        svgContent.addEventListener("touchstart",function(e)
+        svgContent.addEventListener("touchstart",
+            penstart(e));
+        function penstart(e)
         {
-            e.preventDefault();
             var pathElement = document.createElementNS(svgNS,"path");
             var x = e.targetTouches[0].clientX- noteL;
 
@@ -265,26 +256,25 @@ function mousedownHandler(e) {
             pathElement.setAttribute('stroke', 'black');
             pathElement.setAttribute('fill', 'none');
             //console.log("svgtouched");
-
+            svgContent.appendChild(pathElement);
             function touchMove(e)
             {
-
+                e.preventDefault();
                 var x = e.targetTouches[0].clientX- noteL;
                 var y = e.targetTouches[0].clientY - noteT;
                 pathElement.setAttribute("d",pathElement.getAttribute('d')
-                        +' '+x+','+y);
-                svgContent.appendChild(pathElement);
+                    +' '+x+','+y);
             }
             function touchEnd(e)
             {
+                svgContent.removeEventListener('touchstart',penstart)
                 svgContent.removeEventListener('touchmove', touchMove);
                 svgContent.removeEventListener('touchend', touchEnd);
             }
             svgContent.addEventListener('touchmove', touchMove);
             svgContent.addEventListener('touchend', touchEnd);
-        });
+        };
     }
-
     if(e.target.className == 'rotateNote'){
         //source https://stackoverflow.com/questions/11051676/rotating-div-with-mouse-move
         //console.log("rotate");
@@ -373,32 +363,74 @@ function mousedownHandler(e) {
 //
 // }
 
-function removeInput() {
-    if (!(document.getElementById("tbInputText").value)) {
-        document.getElementById("tbInputText").remove();
-        textInputFlag = false;
-    }
-
-}
+// function removeInput() {
+//     if (!(document.getElementById("tbInputText").value)) {
+//         document.getElementById("tbInputText").remove();
+//         textInputFlag = false;
+//     }
+//
+// }
 //store note
+function clear(key) {
+    console.log("clear");
+    var obj = document.getElementById(key);
+    var isText = obj.childNodes[1].getAttribute("textInput");
+    if(isText=='true'){
+        obj.childNodes[1].innerText = "";
+    }else {
+        obj.childNodes[1].firstChild.innerText = "";
+    }
+}
 function penInput(key) {
     //switch container to svg
     //locate mainDiv
     var obj = document.getElementById(key);
     var nodeName = obj.childNodes[1].nodeName;
     if(nodeName == "DIV"){
-        console.log("switch to svg now");
-        obj.childNodes[1].innerText = "";
-        obj.childNodes[1].setAttribute("contenteditable", "true");
-        //var contentDiv = document.createElement("div");
-        var contentSvg = document.createElementNS(svgNS,"svg");
-        contentSvg.setAttribute("class","svgContent");
-        contentSvg.setAttribute("id","svgContent");
-        contentSvg.style.width = "100%";
-        contentSvg.style.height = "100%";
-        obj.childNodes[1].appendChild(contentSvg);
-        obj.removeChild(obj.childNodes[2]);
+        var isTextInput = obj.childNodes[1].getAttribute("textInput");
+        console.log("pen "+isTextInput);
+        if(isTextInput =="true"){
+            console.log("switch to svg now");
+            textTemp = obj.childNodes[1].innerText;
+            obj.childNodes[1].setAttribute("textInput","false");
+            tempData[key] = obj.childNodes[1].innerText;
+            obj.childNodes[1].innerText = "";
+            obj.childNodes[1].setAttribute("contenteditable", "true");
+            var contentSvg = document.createElementNS(svgNS,"svg");
+            contentSvg.setAttribute("class","svgContent");
+            contentSvg.setAttribute("id","svgContent");
+            contentSvg.style.width = "100%";
+            contentSvg.style.height = "100%";
+            //transfer to string is easier by using in/outer HTML
+            if(tempPenData[key].length != 0){
+                var totalPenInput="";
+                for(var i=0; i<tempPenData[key].length;i++) {
+                    totalPenInput =totalPenInput+tempPenData[key][i];
+                }
+                contentSvg.innerHTML = totalPenInput;
+            }
+            obj.childNodes[1].appendChild(contentSvg);
+            obj.removeChild(obj.childNodes[2]);
+
+        }else{
+            tempPenData[key] = obj.childNodes[1].firstChild.innerHTML;
+            console.log("set back to textInput");
+            obj.childNodes[1].setAttribute("textInput","true");
+            obj.childNodes[1].setAttribute("contenteditable", "true");
+            obj.childNodes[1].removeChild(obj.childNodes[1].firstChild);
+            obj.childNodes[1].innerText = tempData[key];
+            var numSpan = createNumSpan(tempData[key],inputLimit);
+            obj.appendChild(numSpan);
+            limitInput(obj.childNodes[1],inputLimit);
+        }
     }
+}
+
+function textInput(key) {
+    //switch container back to text
+    var obj = document.getElementById(key);
+    var nodeName = obj.childNodes[1].nodeName;
+
 }
 //store note
 function saveNote(key) {
@@ -412,10 +444,22 @@ function saveNote(key) {
     var value = {};
     //array for text input lists
     var textValueList = [];
-    //array for text svg as x,y,and textcontent
-    console.log(obj.childNodes[1].nodeName.innerHTML);
-    value['text'] = (obj.childNodes[1].innerText);
+    //save text and peninput
 
+
+    console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
+    var isText = obj.childNodes[1].getAttribute("textInput");
+    if(isText=='true'){
+        value['text'] = obj.childNodes[1].innerText;
+        value['pen'] =tempPenData[key];
+        console.log(value['pen']);
+
+    }else {
+        console.log(obj.childNodes[1].firstChild);
+        value['pen'] = obj.childNodes[1].firstChild.outerHTML;
+        console.log(value['pen']);
+        value['text'] = tempData[key];
+    }
     var color = obj.firstElementChild.childNodes[2];
     var selectedColor = color.options[color.options.selectedIndex].value;
     value['color'] = selectedColor;
@@ -425,12 +469,13 @@ function saveNote(key) {
     console.log("notePosition " + notePositionLeft, notePositionTop);
     value['notePositionLeft'] = notePositionLeft.replace("px", "");
     value['notePositionTop'] = notePositionTop.replace("px", "");
+
     values.push(value);
     values = JSON.stringify(values);
-
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
+        console.log(values);
 
     }
 }
@@ -482,19 +527,6 @@ function changeColor(id) {
 
 }
 
-function link(idArray) {
-    jsPlumb.ready(function () {
-        jsPlumb.connect({
-            source: document.getElementById(idArray[0]),
-            target: document.getElementById(idArray[1]),
-            endpoint: 'Rectangle'
-        })
-
-        jsPlumb.draggable(document.getElementById(idArray[0]));
-        jsPlumb.draggable(document.getElementById(idArray[1]));
-    })
-
-}
 function mouseupHandler(e) {
     // //after moving it will save the note automatically
     $('html,body').removeAttr('style');
@@ -505,13 +537,9 @@ function mouseupHandler(e) {
 
 }
 function mousemoveHandler(e) {
-    // // for page not moving when moving the note
-    // e.preventDefault();
-    ///console.log(e.changedTouches);
     dragObj.style.left = (_offsetX + e.targetTouches[0].clientX - _startX) + 'px';
     dragObj.style.top = (_offsetY + e.targetTouches[0].clientY - _startY) + 'px';
-    // dragObj.style.left = (_offsetX + e.clientX - _startX) + 'px';	    // for page not moving when moving the note
-    // dragObj.style.top = (_offsetY + e.clientY - _startY) + 'px';
+
 }
 
 function getMousePos(event) {
