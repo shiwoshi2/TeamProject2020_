@@ -58,7 +58,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: black;
+    background-color: transparent;
 
     width: 28px;
     height: 28px;

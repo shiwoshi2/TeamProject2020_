@@ -99,14 +99,14 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(saveImg);
     // pen input
     var penInput = document.createElement("img");
-    penInput.setAttribute("src", "images/icon-save.png");
+    penInput.setAttribute("src", "images/icon-pen.png");
     penInput.setAttribute("class", "penInput");
     // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
     titleDiv.appendChild(penInput);
 
     var rotateNote = document.createElement("img");
-    rotateNote.setAttribute("src", "images/icon-save.png");
+    rotateNote.setAttribute("src", "images/icon-rotate.png");
     rotateNote.setAttribute("class", "rotateNote");
 
     // Add note
