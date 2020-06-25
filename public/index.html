@@ -71,41 +71,42 @@
                                 style="background: url(./images/icon-search.png) no-repeat;  background-size: 100%;"></span>
                         </button>
 
-                        <button class="btn btn-default navbutton" id="searchNote" data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
+                        <button class="btn btn-default navbutton" id="searchNote" >
                             <span class="navspan"  style="background: url(./images/icon-pen.png) no-repeat;  background-size: 100%;" ></span>
                          </button>
 
-                         <button class="btn btn-default navbutton" id="searchNote" data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
+                         <button class="btn btn-default navbutton" id="searchNote" >
                             <span class="navspan"  style="background: url(./images/icon-shape.png) no-repeat;  background-size: 100%;" ></span>
                          </button>
 
-                        <button class="btn btn-default navbutton" id="cluster" data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
+                        <button class="btn btn-default" id="cluster">
                             <span class="navspan"  style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;" ></span>
                          </button>
 
                     
-                            <div class="dropdown-menu" aria-labelledby="cluster">
+                            <div class="dropdown-menu" id="cluster-menu" style="
+                            position: relative;
+                            width:228px;
+                            top: -80px;
+                            left: -80px;">
                                 <div class="btn-group">
-                                <button class="btn  btn-default navbutton" id="clusterColorStickies" >
-                                <span class="navspan"
-                                style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
+                                    
 
-                                <button class="btn  btn-default navbutton" id="searchNote" >
-                                    <span class="navspan"
+                                        <button class="btn  btn-default navbutton" id="clusterColorStickies" >
+                                        <span class="navspan"
+                                        style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
+                                        </button>
+
+                                        <button class="btn  btn-default navbutton" id="searchNote" >
+                                        <span class="navspan"
                                         style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
+                                        </button>
 
-                                <button class="btn  btn-default navbutton" id="searchNote" >
-                                    <span class="navspan"
+                                        <button class="btn  btn-default navbutton" id="searchNote" >
+                                        <span class="navspan"
                                         style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
+                                        </button>
+                                
                                 </div>
                             </div>
                             
@@ -117,6 +118,15 @@
         </div>
     
     </nav>
-
+    <script type="text/javascript">
+        $(function(){
+            var a = $("#cluster");
+            a.click(function(evt){
+                evt.stopPropagation();
+                $("#cluster-menu").toggleClass("show");
+            })
+        });
+        
+    </script>
 </body>
 </html>
