@@ -129,31 +129,67 @@ body > .note:hover {
     background-color: #6C6;
 }
 
-select option[value='#CCFFCC']{
+
+select option[value='#EF9A9A']{
 
     
-    background: #CCFFCC;
+    background: #EF9A9A;
 
 }
 
-select option[value='#FFCCCC']{
+select option[value='#CE93D8']{
     
-    background:#FFCCCC ;
+    background:#CE93D8;
 
 }
 
-select option[value='#99CCFF']{
+select option[value='#81D4FA']{
     
-    background: #99CCFF;
+    background: #81D4FA;
 
 }
 
-select option[value='#FFFFCC']{
+select option[value='#80CBC4']{
     
-    background: #FFFFCC;
+    background: #80CBC4;
+
+}
+select option[value='#C5E1A5']{
+
+    
+    background: #C5E1A5;
 
 }
 
+select option[value='#FFF59D']{
+    
+    background: #FFF59D;
+
+}
+
+select option[value='#FFCC80']{
+    
+    background: #FFCC80;
+
+}
+
+select option[value='#BCAAA4']{
+    
+    background: #BCAAA4;
+
+}
+
+select option[value='#F48FB1']{
+    
+    background: #F48FB1;
+
+}
+
+select option[value='#9FA8DA']{
+    
+    background: #9FA8DA;
+
+}
 
 .optionsItem{
     width: 28px;
