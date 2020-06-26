@@ -76,10 +76,16 @@ function addNote(key = 0, values = []) {
     var colorBg = document.createElement("select");
 
     colorBg.setAttribute("class", "colorBg");
-    colorBg.options.add(new Option("", "#CCFFCC"));
-    colorBg.options.add(new Option("", "#FFCCCC"));
-    colorBg.options.add(new Option("", "#99CCFF"));
-    colorBg.options.add(new Option("", "#FFFFCC"));
+    colorBg.options.add(new Option("", "#EF9A9A"));
+    colorBg.options.add(new Option("", "#CE93D8"));
+    colorBg.options.add(new Option("", "#81D4FA"));
+    colorBg.options.add(new Option("", "#80CBC4"));
+    colorBg.options.add(new Option("", "#C5E1A5"));
+    colorBg.options.add(new Option("", "#FFF59D"));
+    colorBg.options.add(new Option("", "#FFCC80"));
+    colorBg.options.add(new Option("", "#BCAAA4"));
+    colorBg.options.add(new Option("", "#F48FB1"));
+    colorBg.options.add(new Option("", "#9FA8DA"));
     if (values[0]['color']) {
         mainDiv.style.backgroundColor = values[0]['color'];
     }
@@ -96,7 +102,7 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(saveImg);
     // pen input
     var penInput = document.createElement("img");
-    penInput.setAttribute("src", "images/icon-pen.png");
+    penInput.setAttribute("src", "images/icon-pen28.png");
     penInput.setAttribute("class", "penInput");
     // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
@@ -108,7 +114,7 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(rotateNote);
     //clear button
     var clear = document.createElement("img");
-    clear.setAttribute("src", "images/icon-pen.png");
+    clear.setAttribute("src", "images/icon-clearPen.png");
     clear.setAttribute("class", "clear");
     clear.setAttribute("onclick", "clearContent('" + id + "')");
     titleDiv.appendChild(clear);
