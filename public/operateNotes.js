@@ -525,86 +525,88 @@ function init() {
 
 function clusterColorStickies() {
 
-    // We initially support 2 clusters
-    // Cluster 1: Red
-    // Cluster 2: Green
-    // Cluster 3: Blue
-    // Cluster 4: Yellow
+    // Array creation
+    var arr = new Array(10);
+    for(var i=0;i<10; i++){
+        arr[i] = new Array();
+    }
 
-    // Get the dimensions of the screen
-    var height = window.screen.height;
-    var width = window.screen.width;
+    // colorBg.options.add(new Option("", "#EF9A9A"));
+    // colorBg.options.add(new Option("", "#CE93D8"));
+    // colorBg.options.add(new Option("", "#81D4FA"));
+    // colorBg.options.add(new Option("", "#80CBC4"));
+    // colorBg.options.add(new Option("", "#C5E1A5"));
+    // colorBg.options.add(new Option("", "#FFF59D"));
+    // colorBg.options.add(new Option("", "#FFCC80"));
+    // colorBg.options.add(new Option("", "#BCAAA4"));
+    // colorBg.options.add(new Option("", "#F48FB1"));
+    // colorBg.options.add(new Option("", "#9FA8DA"));
 
-
-    var c1_x1 = 0, c1_y1 = 0;
-    var c1_xstart = 0, c1_ystart = 0;
-    var c2_x1 = width / 2, c2_y1 = 0;
-    var c3_x1 = 0, c3_y1 = height / 2;
-    var c4_x1 = width / 2, c4_y1 = height / 2;
-
+    // Count same colored stickies and store in array with sticky keys
     for (var i = 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
 
-        if (value[0].color == "#FFCCCC") {
-            document.getElementById(key).style.left = c1_x1 + "px";
-            document.getElementById(key).style.top = c1_y1 + "px";
-
-            if ((c1_y1 + 180) < (height / 2)) {
-                c1_y1 += 180;
-            }
-            else {
-                c1_x1 += 180;
-                c1_y1 = c1_ystart;
-            }
-            if ((c1_x1 + 180) > width / 2) {
-                c1_xstart += 20;
-                c1_ystart += 20;
-                c1_x1 = c1_xstart;
-                c1_y1 = c1_ystart;
-
-            }
-
+        if (value[0].color == "#EF9A9A") {
+            arr[0].push(key);
         }
-        if (value[0].color == "#CCFFCC") {
-            document.getElementById(key).style.left = c2_x1 + "px";
-            document.getElementById(key).style.top = c2_y1 + "px";
-
-            if ((c2_y1 + 180) < (height / 2)) {
-                c2_y1 += 180;
-            }
-            else {
-                c2_x1 += 180;
-                c2_y1 = 0;
-            }
+        else if (value[0].color == "#CE93D8"){
+            arr[1].push(key);
         }
-        if (value[0].color == "#99CCFF") {
-            document.getElementById(key).style.left = c3_x1 + "px";
-            document.getElementById(key).style.top = c3_y1 + "px";
-
-            if ((c3_y1 + 180) < height) {
-                c3_y1 += 180;
-            }
-            else {
-                c3_x1 += 180;
-                c3_y1 = height / 2;
-            }
+        else if (value[0].color == "#81D4FA"){
+            arr[2].push(key);
         }
-        if (value[0].color == "#FFFFCC") {
-            document.getElementById(key).style.left = c4_x1 + "px";
-            document.getElementById(key).style.top = c4_y1 + "px";
-
-            if ((c4_y1 + 180) < height) {
-                c4_y1 += 180;
-            }
-            else {
-                c4_x1 += 180;
-                c4_y1 = height / 2;
-            }
+        else if (value[0].color == "#80CBC4"){
+            arr[3].push(key);
+        }
+        else if (value[0].color == "#C5E1A5"){
+            arr[4].push(key);
+        }
+        else if (value[0].color == "#FFF59D"){
+            arr[5].push(key);
+        }
+        else if (value[0].color == "#FFCC80"){
+            arr[6].push(key);
+        }
+        else if (value[0].color == "#BCAAA4"){
+            arr[7].push(key);
+        }
+        else if (value[0].color == "#F48FB1"){
+            arr[8].push(key);
+        }
+        else if (value[0].color == "#9FA8DA"){
+            arr[9].push(key);
         }
 
     }
+    // console.log(arr[0].length);      
+    // Get the dimensions of the screen
+    var height = window.screen.height;
+    var width = window.screen.width;
+
+    var pos_x = 0, pos_y = 0;
+    var start_x = 0, start_y = 0;
+
+    for(var i=0;i<10;i++){
+        var count = arr[i].length;
+        if(count>0){
+            pos_x = start_x, pos_y = start_y;
+            for(var j=0; j<count; j++){
+                key = arr[i].pop();
+                sticky_position_change(key,pos_x,pos_y);
+                pos_y+= 180;
+                if((pos_y+180) > height){
+                    pos_y = 0;
+                    pos_x += 220;
+                }
+            }
+            start_x = pos_x + 220;
+            start_y = 0;
+            count = 0;
+        }
+    }
+
 }
 
 function searchSticky() {
