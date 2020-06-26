@@ -326,6 +326,7 @@ function penInput(key) {
     //locate mainDiv
     var obj = document.getElementById(key);
     var nodeName = obj.childNodes[1].nodeName;
+
     if(nodeName == "DIV"){
         var isTextInput = obj.childNodes[1].getAttribute("textInput");
         console.log("pen "+isTextInput);
