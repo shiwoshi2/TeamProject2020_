@@ -1,5 +1,5 @@
 .note {
-    width: 180px;
+    width: 200px;
     height: 170px;
     background-color: rgb(168, 255, 197);
     box-shadow: 2px 5px 5px gray;
@@ -8,7 +8,7 @@
     position: absolute;
 }
 .noteTitle {
-    width: 180px;
+    width: 200px;
     height: 28px;
     background-color: rgb(231, 231, 231);
 }
@@ -49,8 +49,9 @@
     -moz-appearance: none;
     background-color: transparent;
 
-    width: 28px;
-    height: 28px; 
+    display: block;
+    float: left;
+    font-size: 2px;
 
 }
 .clear {
@@ -58,10 +59,9 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: black;
-
-    width: 10px;
-    height: 28px;
+    display: block;
+    float: left;
+    font-size: 2px;
 
 }
 .rotateNote {
@@ -70,9 +70,10 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
-
-    width: 28px;
-    height: 28px;
+    display: block;
+    float: left;
+    font-size: 2px;
+    
 
 }
 .counter {
@@ -88,7 +89,7 @@
     z-index: -1;
     white-space: pre-line;
     white-space: pre-wrap;
-    width: 180px;
+    width: 200px;
     height: 140px;
     padding: 5px 10px 5px 10px;
 

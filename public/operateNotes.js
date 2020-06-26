@@ -102,7 +102,7 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(saveImg);
     // pen input
     var penInput = document.createElement("img");
-    penInput.setAttribute("src", "images/icon-pen.png");
+    penInput.setAttribute("src", "images/icon-pen28.png");
     penInput.setAttribute("class", "penInput");
     // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
@@ -114,7 +114,7 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(rotateNote);
     //clear button
     var clear = document.createElement("img");
-    clear.setAttribute("src", "images/icon-pen.png");
+    clear.setAttribute("src", "images/icon-clearPen.png");
     clear.setAttribute("class", "clear");
     clear.setAttribute("onclick", "clearContent('" + id + "')");
     titleDiv.appendChild(clear);
