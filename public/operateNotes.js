@@ -145,6 +145,8 @@ function createTextContent(text,id,isText){
     contentDiv.setAttribute("contenteditable", "true");
     contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
     contentDiv.setAttribute("textInput",isText);
+    contentDiv.style.width = "100%";
+    contentDiv.style.height = "80%";
     return contentDiv;
 }
 
@@ -309,68 +311,6 @@ function mousedownHandler(e) {
     }
 }
 
-// Anke Lehmann's code
-// function addTextInput(svgTxtElement, svgContent, x, y) {
-//     // when text input flag triggered
-//     var input = document.createElement("input");
-//     input.setAttribute("id", "tbInputText");
-//
-//     input.type = 'text';
-//     input.style.position = 'fixed';
-//     input.style.left = (x ) + "px";
-//     input.style.top = (y ) + "px";
-//     input.style.width = 100 + "px";
-//     input.style.height = 20 + "px";
-//     input.style.backgroundColor = "blue";
-//     input.style.zIndex = "10";
-//     input.setAttribute("onblur", "removeInput()");
-//     input.setAttribute("onmousemove", "this.focus()");
-//
-//     var textFlag = false;
-//     if (svgTxtElement.textContent != '') {
-//         input.value = svgTxtElement.textContent;
-//         textFlag = true;
-//     }
-//     if (textInputFlag == false) {
-//         textInputFlag = true;
-//         document.body.appendChild(input);
-//         input.addEventListener('keydown', function (event) {
-//             if (event.keyCode == 13) {
-//                 console.log("keydown");
-//                 svgTxtElement.textContent = document.getElementById('tbInputText').value;
-//                 if (!textFlag) {
-//                     svgContent.appendChild(svgTxtElement);
-//                 } else {
-//                     svgText.textContent = document.getElementById('tbInputText').value;
-//                 }
-//                 svgTxtElement = '';
-//                 document.getElementById("tbInputText").remove();
-//                 textInputFlag = false;
-//                 //init();
-//             }
-//
-//             if (event.keyCode == 27) {
-//                 //init();
-//                 svgTxtElement = '';
-//                 document.getElementById("tbInputText").remove();
-//                 textInputFlag = false;
-//             }
-//
-//         });
-//
-//     }
-//
-//
-// }
-
-// function removeInput() {
-//     if (!(document.getElementById("tbInputText").value)) {
-//         document.getElementById("tbInputText").remove();
-//         textInputFlag = false;
-//     }
-//
-// }
-//store note
 function clearContent(key) {
     console.log("clear");
     var obj = document.getElementById(key);

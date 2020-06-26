@@ -1,5 +1,5 @@
 .note {
-    width: 180px;
+    width: 220px;
     height: 170px;
     background-color: rgb(168, 255, 197);
     box-shadow: 2px 5px 5px gray;
@@ -8,7 +8,7 @@
     position: absolute;
 }
 .noteTitle {
-    width: 180px;
+    width: 220px;
     height: 28px;
     background-color: rgb(231, 231, 231);
 }
