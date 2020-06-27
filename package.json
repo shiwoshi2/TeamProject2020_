@@ -15,6 +15,8 @@
     "@svgdotjs/svg.js": "^3.0.16",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "file-saver": "^2.0.2",
+    "html2canvas": "^1.0.0-rc.5",
     "mongoose": "^5.7.3",
     "socket.io": "^2.3.0"
   }

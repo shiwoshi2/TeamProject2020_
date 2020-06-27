@@ -1,3 +1,4 @@
+//basic structure ref:https://blog.csdn.net/S_clifftop/article/details/73195564
 var divTop = 50;
 var divLeft = 0;
 var k = 0;
@@ -32,7 +33,7 @@ function addNote(key = 0, values = []) {
         var values = [];
         var initValue = {};
         initValue['text'] = "";
-        initValue['color'] = '#CCFFCC';
+        initValue['color'] = '#EF9A9A';
         initValue['notePositionLeft'] = divLeft;
         initValue['notePositionTop'] = divTop;
         initValue['pen'] = "";
@@ -86,9 +87,6 @@ function addNote(key = 0, values = []) {
     colorBg.options.add(new Option("", "#BCAAA4"));
     colorBg.options.add(new Option("", "#F48FB1"));
     colorBg.options.add(new Option("", "#9FA8DA"));
-    if (values[0]['color']) {
-        mainDiv.style.backgroundColor = values[0]['color'];
-    }
     colorBg.setAttribute("onclick", "changeColor('" + id + "')");
 
     titleDiv.appendChild(colorBg);
@@ -120,6 +118,9 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(clear);
 
     var contentDiv = createTextContent(values[0]['text'],id,"true");
+    if (values[0]['color']) {
+        contentDiv.style.backgroundColor = values[0]['color'];
+    }
     var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
@@ -149,7 +150,7 @@ function createTextContent(text,id,isText){
     contentDiv.innerText = text;
     contentDiv.setAttribute("class", "noteContent");
     contentDiv.setAttribute("contenteditable", "true");
-    contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
+    //contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
     contentDiv.setAttribute("textInput",isText);
     contentDiv.style.width = "100%";
     contentDiv.style.height = "80%";
@@ -226,7 +227,11 @@ function mousedownHandler(e) {
 
     if (e.target.className == 'noteTitle') {
         //locate the note
-        dragObj = e.target.parentNode;
+        var noteId = e.target.parentElement.getAttribute("id");
+        var color  = document.getElementById(noteId).style.backgroundColor ;
+        console.log(color);
+        dragObj = document.getElementById(noteId);
+        // changeColor(noteId);
         var t = dragObj.style.top;
         var l = dragObj.style.left;
         z += 1;
@@ -237,7 +242,8 @@ function mousedownHandler(e) {
         _offsetY = dragObj.offsetTop;
         document.addEventListener("touchmove", mousemoveHandler, false);
         //dierctly way to do
-        $('html,body').css('height', '100%').css('overflow', 'hidden');
+        //$('html,body').css('height', '100%').css('overflow', 'hidden');
+        console.log(color.options.selectedIndex);
     }
     if (e.target.className == "noteContent") {
         console.log("notecontent touched");
@@ -394,17 +400,17 @@ function saveNote(key) {
     //save text and peninput
 
 
-    console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
+    //console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         value['text'] = obj.childNodes[1].innerText;
         value['pen'] =tempPenData[key];
-        console.log(value['pen']);
+        //console.log(value['pen']);
 
     }else {
-        console.log(obj.childNodes[1].firstChild);
+        //console.log(obj.childNodes[1].firstChild);
         value['pen'] = obj.childNodes[1].firstChild.outerHTML;
-        console.log(value['pen']);
+        //console.log(value['pen']);
         value['text'] = tempData[key];
     }
     var color = obj.firstElementChild.childNodes[2];
@@ -413,7 +419,7 @@ function saveNote(key) {
 
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
-    console.log("notePosition " + notePositionLeft, notePositionTop);
+    //console.log("notePosition " + notePositionLeft, notePositionTop);
     value['notePositionLeft'] = notePositionLeft.replace("px", "");
     value['notePositionTop'] = notePositionTop.replace("px", "");
 
@@ -422,28 +428,35 @@ function saveNote(key) {
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
-        console.log(values);
+        //console.log(values);
 
     }
 }
 
 //reload from local
-function loadData() {
+function loadData(dataByUpload = false,uploadedData = []) {
     //key,value as json，passed to addNote
-    var idLength = 0;
-    var idArray = [];
-    for (var i = 0; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
-        var values = localStorage.getItem(key);
-        var value = JSON.parse(values);
-        idLength++;
-        idArray.push(key);
-        addNote(key, value);
-    }
+    if(dataByUpload){
+        for (var i = 0; i < localStorage.length; i++) {
+            deleteNote(localStorage.key(i));
+        }
+        uploadedData = JSON.parse(uploadedData);
+        for (var d in uploadedData) {
+            console.log(d);
+            addNote(Number(d), JSON.parse(uploadedData[d]));
+        }
 
-    //test line link when note num is 2
-    if (idLength == 2) {
-        //link(idArray);
+    }else{
+        var idLength = 0;
+        var idArray = [];
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            var values = localStorage.getItem(key);
+            var value = JSON.parse(values);
+            idLength++;
+            idArray.push(key);
+            addNote(key, value);
+        }
     }
 
 
@@ -465,18 +478,20 @@ function deleteNotesAll() {
 function changeColor(id) {
     var obj = document.getElementById(id);
     var color = obj.firstElementChild.childNodes[2];
-
+    console.log(color.options);
+    console.log(color.options.selectedIndex);
+    console.log(color.options[color.options.selectedIndex]);
     //just a guessing
     var selectedColor = color.options[color.options.selectedIndex].value;
 
-    obj.style.backgroundColor = selectedColor;
+    obj.childNodes[1].style.backgroundColor = selectedColor;
     saveNote(id);
 
 }
 
 function mouseupHandler(e) {
     // //after moving it will save the note automatically
-    $('html,body').removeAttr('style');
+    //$('html,body').removeAttr('style');
     document.removeEventListener("touchmove", mousemoveHandler, false);
     saveNote(e.target.parentNode.id);
 
