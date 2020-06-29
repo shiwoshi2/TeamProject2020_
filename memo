@@ -1,3 +1,7 @@
 1. switch note input as touchmove, use the button before black button, (hand writing) done, no store for now(ongoing
 2. rotate note (down) black button
 3.drawing boundary ongoing
+
+need to npm install
+npm install --save html2canvas
+npm install file-saver --save

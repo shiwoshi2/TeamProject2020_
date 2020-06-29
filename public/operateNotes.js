@@ -75,7 +75,7 @@ function addNote(key = 0, values = []) {
     // ==============================================================================================
     // Set color of the background
     var colorBg = document.createElement("select");
-
+    
     colorBg.setAttribute("class", "colorBg");
     colorBg.options.add(new Option("", "#EF9A9A"));
     colorBg.options.add(new Option("", "#CE93D8"));
@@ -153,7 +153,7 @@ function createTextContent(text,id,isText){
     //contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
     contentDiv.setAttribute("textInput",isText);
     contentDiv.style.width = "100%";
-    contentDiv.style.height = "80%";
+    contentDiv.style.height = "90%";
     return contentDiv;
 }
 
