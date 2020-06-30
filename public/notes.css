@@ -81,6 +81,7 @@
     white-space: pre-wrap;
     width: 200px;
     height: 100%;
+    overflow-y: scroll;
 }
 
 .addIcon {
@@ -126,7 +127,7 @@ body > .note:hover {
     -ms-transform: rotate(0deg);
     transform: rotate(0deg);
     z-index: 10;
-    background-color: #666;
+    background-color: transparent;
 }
 
 

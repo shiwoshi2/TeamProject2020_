@@ -121,12 +121,12 @@ function addNote(key = 0, values = []) {
     if (values[0]['color']) {
         contentDiv.style.backgroundColor = values[0]['color'];
     }
-    var numSpan = createNumSpan(values[0]["text"],inputLimit);
+    // var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
-    mainDiv.appendChild(numSpan);
+    // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
-    limitInput(contentDiv,inputLimit);
+    // limitInput(contentDiv,inputLimit);
 }
 
 // Move the note
@@ -153,7 +153,7 @@ function createTextContent(text,id,isText){
     //contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
     contentDiv.setAttribute("textInput",isText);
     contentDiv.style.width = "100%";
-    contentDiv.style.height = "90%";
+    contentDiv.style.height = 192+'px';
     return contentDiv;
 }
 
@@ -228,8 +228,6 @@ function mousedownHandler(e) {
     if (e.target.className == 'noteTitle') {
         //locate the note
         var noteId = e.target.parentElement.getAttribute("id");
-        var color  = document.getElementById(noteId).style.backgroundColor ;
-        console.log(color);
         dragObj = document.getElementById(noteId);
         // changeColor(noteId);
         var t = dragObj.style.top;
@@ -243,10 +241,22 @@ function mousedownHandler(e) {
         document.addEventListener("touchmove", mousemoveHandler, false);
         //dierctly way to do
         //$('html,body').css('height', '100%').css('overflow', 'hidden');
-        console.log(color.options.selectedIndex);
+        //console.log(color.options.selectedIndex);
     }
     if (e.target.className == "noteContent") {
         console.log("notecontent touched");
+        var noteId = e.target.parentElement.getAttribute("id");
+        dragObj = document.getElementById(noteId);
+        // changeColor(noteId);
+        var t = dragObj.style.top;
+        var l = dragObj.style.left;
+        z += 1;
+        dragObj.setAttribute("style", "top:" + t + ";left:" + l + ";z-index:" + z);
+        _startX = e.targetTouches[0].clientX;
+        _startY = e.targetTouches[0].clientY;
+        _offsetX = dragObj.offsetLeft;
+        _offsetY = dragObj.offsetTop;
+        document.addEventListener("touchmove", mousemoveHandler, false);
     }
     if(e.target.getAttribute("class") == 'svgContent'){
         // //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
@@ -372,9 +382,9 @@ function penInput(key) {
             obj.childNodes[1].setAttribute("contenteditable", "true");
             obj.childNodes[1].removeChild(obj.childNodes[1].firstChild);
             obj.childNodes[1].innerText = tempData[key];
-            var numSpan = createNumSpan(tempData[key],inputLimit);
-            obj.appendChild(numSpan);
-            limitInput(obj.childNodes[1],inputLimit);
+            // var numSpan = createNumSpan(tempData[key],inputLimit);
+            // obj.appendChild(numSpan);
+            // limitInput(obj.childNodes[1],inputLimit);
         }
     }
 }
