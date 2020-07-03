@@ -16,8 +16,7 @@ function addNote(key = 0, values = []) {
         // ID using time
         id = new Date().getTime();
     }
-    console.log(displaySize);
-    console.log(divOffset);
+    
     // Location when "add" was hit
     if (divLeft != 0) {
         divLeft += 260;
