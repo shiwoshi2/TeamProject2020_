@@ -16,16 +16,18 @@ function addNote(key = 0, values = []) {
         // ID using time
         id = new Date().getTime();
     }
+    console.log(displaySize);
+    console.log(divOffset);
     // Location when "add" was hit
     if (divLeft != 0) {
-        divLeft += 200;
-        if (divLeft >= 1200) {
-            divTop += 200;
-            divLeft = 50;
+        divLeft += 260;
+        if (divLeft >= displaySize) {
+            divTop += 230;
+            divLeft = divOffset;
         }
     }
     else {
-        divLeft = 50;
+        divLeft = divOffset;
     }
 
     if (values.length == 0) {
