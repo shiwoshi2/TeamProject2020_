@@ -9,7 +9,6 @@
     <script src="operateNotes.js"></script>
     <script src="index.js"></script>
     <script src="ajust.js"></script>
-    <script src="sync.js"></script>
 
     <script type="text/javascript">
         $(function(){
@@ -18,7 +17,6 @@
         });
         
     </script>
-
     
     <script src="https://cdn.bootcss.com/jsPlumb/2.6.8/js/jsplumb.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -47,6 +45,7 @@
         </main>
     </div>
 
+            
    
     <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light customnav "  >
         <div class="collapse navbar-collapse" >
@@ -164,22 +163,29 @@
             }
             var blob = new Blob([JSON.stringify(dataOut)], {type: "text/plain;charset=utf-8"});
              saveAs(blob, "save.json");
+        
+        
          }
 
         function upload(){
+            /*#load:Ϊ��ť,���������һ�����ص�input file��ǩ*/
             document.getElementById("files").click();
         }
         function fileImport() {
             var selectedFile = document.getElementById('files').files[0];
-            var reader = new FileReader();
-            reader.readAsText(selectedFile);
+
+            //�����ϴ��ļ�����
+            var reader = new FileReader();//���Ǻ���,��ȡ���������������?.
+            reader.readAsText(selectedFile);//��ȡ�ļ�������,Ҳ���Զ�ȡ�ļ���URL
             reader.onload = function () {
+                //����ȡ��ɺ�ص��������?,Ȼ���ʱ�ļ������ݴ洢����result��,ֱ�Ӳ�������
                 console.log(this.result);
                 var ii =JSON.parse(this.result);
                 for(var i in ii){
                     console.log(i+typeof Number(i)+typeof new Date().getTime());
                     console.log("-------------------");
                     console.log(JSON.parse(ii[i]));
+
                 }
                 loadData(true,this.result);
             }
