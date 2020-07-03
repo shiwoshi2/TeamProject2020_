@@ -2,7 +2,7 @@
     /*position: fixed;*/
     width: 100%;
     height: 100%;
-    background-image:url(images/grid.png);
+    /*background-image:url(images/grid.png);*/
   }
   
  
@@ -23,8 +23,8 @@
 
 .navspan {
     
-    width: 28px;  
-    height: 28px;
+    width: 100px;  
+    height: 100px;
    float: left;
     
 }
@@ -53,11 +53,12 @@
 }
 
 .dropdown-menu {
+    width: 832px;;
+    min-width: 54px;
     height: fit-content; 
    /* padding-bottom: 5px;
     padding-top: 5px;*/
-    width: 32px;
-    min-width: 51px!important;
+    
 }
 
 li {

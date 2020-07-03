@@ -1,0 +1,43 @@
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light customnav ">
+        <div class="container-fluid">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item dropup">
+                    <button class="btn  btn-default navbutton" id="addNote">
+                        <span class="navspan"
+                            style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;"></span>
+                    </button>
+
+                  <button class="btn btn-default navbutton" id="cluster" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="navspan"
+                            style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;"></span>
+                    </button>
+                 
+                    <div class="btn-group dropup">
+                        <div class="dropdown-menu" aria-labelledby="cluster" style="width: 178px;
+                        position: relative;" >
+                            
+                            <button class="btn  btn-default navbutton" id="clusterColorStickies">
+                                <span class="navspan"
+                                    style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
+                            </button>
+
+                            <button class="btn  btn-default navbutton" id="searchNote">
+                                <span class="navspan"
+                                    style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
+                            </button>
+
+                            <button class="btn  btn-default navbutton" id="searchNote">
+                                <span class="navspan"
+                                    style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </nav>>
+    
+   

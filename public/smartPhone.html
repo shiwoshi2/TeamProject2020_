@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="gbk">
     <title>my note</title>
@@ -11,17 +10,11 @@
     <script src="index.js"></script>
     <script src="ajust.js"></script>
 
-    <script type="text/javascript">
-        $(function () {
-            var svgRootDom = $("#sketchpad")[0];
-            adjustToFreezeWidth(svgRootDom);
-        });
-
-    </script>
-
+    
+    
     <script src="https://cdn.bootcss.com/jsPlumb/2.6.8/js/jsplumb.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -31,141 +24,96 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"
-        type="text/javascript"></script>
-    <script type="text/javascript" src="html2canvas.js"></script>
-    <script type="text/javascript" src="FileSaver.js"></script>   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+   
 </head>
-
 <body>
     <div class="container">
         <main role="main">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                id="sketchpad" preserveAspectRatio="xMinYMin meet" viewbox="0 0 3000 3000"></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="sketchpad"
+            preserveAspectRatio="xMinYMin meet"  viewbox="0 0 3000 3000" 
+               ></svg>
         </main>
     </div>
 
+      <script type="text/javascript">
+        $(function(){
+            var svgRootDom = $("#sketchpad")[0];
+            adjustToFreezeWidth(svgRootDom);
+        });
+        
+    </script>      
 
+<nav class="nav fixed-top navbar-light navbar-toggleable-sm">
+    <div class="container-fluid">
+        <ul class="navbar-nav mx-auto" >
+            <li class="nav-item dropright">
+                <button class="btn btn-default navbutton" id="menu" data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                <span class="navspan"  style="background: url(./images/menu.png) no-repeat;  background-size: 100%;" ></span>
+                </button>
 
-    <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light customnav ">
-        <div class="container-fluid">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                    <button class="btn  btn-default navbutton" id="addNote">
-                        <span class="navspan"
-                            style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;"></span>
+                <div class="dropdown-menu" aria-labelledby="menu">
+                    <div class="btn-group-vertical">
+                    <button class="btn  btn-default navbutton" id="addNote" >
+                        <span class="navspan"  style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;" ></span>
                     </button>
+                
+                    
+                     
+                    <button class="btn btn-default" id="cluster">
+                        <span class="navspan"  style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;" ></span>
+                     </button>
 
-                    <button class="btn  btn-default navbutton" id="removeAllNote">
-                        <span class="navspan"
-                            style="background: url(./images/icon-trash.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
+                
+                        <div class="dropdown-menu" id="cluster-menu" style="
+                        position: fixed;
+                        width:153px;
+                        top: 40px;">
+                            <div class="btn-group">
+                                
 
-                    <button class="btn  btn-default navbutton" id="searchNote">
-                        <span class="navspan"
-                            style="background: url(./images/icon-search.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
-
-                     <button class="btn btn-default navbutton"  onclick="upload()">
-                        <span class="navspan"  style="background: url(./images/icon-upload.png) no-repeat;  background-size: 100%;" ></span>
-                        <input type="file" id="files" style="display: none" onchange="fileImport();">
-                    </button>
-
-                    <button class="btn btn-default navbutton"  onclick="save()">
-                        <span class="navspan"  style="background: url(./images/icon-download.png) no-repeat;  background-size: 100%;" ></span>
-                    </button>
-
-                    <button class="btn btn-default navbutton" id="searchNote">
-                        <span class="navspan"
-                            style="background: url(./images/icon-pen.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
-
-                    <button class="btn btn-default navbutton" id="searchNote">
-                        <span class="navspan"
-                            style="background: url(./images/icon-shape.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
-
-                   
-                    <button class="btn btn-default navbutton" id="cluster" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <span class="navspan"
-                            style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
-
-                    <div class="btn-group dropup">
-                        <div class="dropdown-menu" aria-labelledby="cluster" style="width: 178px;">
-                            
-                            <button class="btn  btn-default navbutton" id="clusterColorStickies">
-                                <span class="navspan"
+                                    <!-- Heirarchical clustering -->
+                                    <button class="btn  btn-default navbutton" id="heirarchical" >
+                                    <span class="navspan"
                                     style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
-
-                            <button class="btn  btn-default navbutton" id="searchNote">
-                                <span class="navspan"
+                                    </button>
+                                    <!-- K-mean clustering -->
+                                    <button class="btn  btn-default navbutton" id="kmean" >
+                                    <span class="navspan"
                                     style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
-
-                            <button class="btn  btn-default navbutton" id="searchNote">
-                                <span class="navspan"
+                                    </button>
+                                    <!-- Voronoi clustering -->
+                                    <button class="btn  btn-default navbutton" id="voronoi" >
+                                    <span class="navspan"
                                     style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
-
+                                    </button>
+                            
+                            </div>
                         </div>
+                        
+                    
                     </div>
+                </div>
+            </li>
+        </ul>
+    
+</div>
+</nav>
 
-                </li>
-            </ul>
-        </div>
-    </nav>>
 <script type="text/javascript">
+    $(function(){
+        var a = $("#cluster");
+        a.click(function(evt){
+            evt.stopPropagation();
+            $("#cluster-menu").toggleClass("show");
+        })
+    });
+    
+</script>
 
-         function save() {
-             console.log("download png");
-             html2canvas(document.body).then(canvas => {
-                 //save as png like screenshot
-                 canvas.toBlob(function(blob) {
-                     saveAs(blob, "hangge.png");
-                 });
-             });
-            //save as json
-             var dataOut = {};
-            for (var i = 0; i < localStorage.length; i++) {
-                 var key = localStorage.key(i);
-                 var values = localStorage.getItem(key);
-                 var value = JSON.parse(values);
-                 dataOut[key] = values;
-            }
-            var blob = new Blob([JSON.stringify(dataOut)], {type: "text/plain;charset=utf-8"});
-             saveAs(blob, "save.json");
-        
-        
-         }
-
-        function upload(){
-            /*#load:Ϊ��ť,���������һ�����ص�input file��ǩ*/
-            document.getElementById("files").click();
-        }
-        function fileImport() {
-            var selectedFile = document.getElementById('files').files[0];
-
-            //�����ϴ��ļ�����
-            var reader = new FileReader();//���Ǻ���,��ȡ���������������.
-            reader.readAsText(selectedFile);//��ȡ�ļ�������,Ҳ���Զ�ȡ�ļ���URL
-            reader.onload = function () {
-                //����ȡ��ɺ�ص��������,Ȼ���ʱ�ļ������ݴ洢����result��,ֱ�Ӳ�������
-                console.log(this.result);
-                var ii =JSON.parse(this.result);
-                for(var i in ii){
-                    console.log(i+typeof Number(i)+typeof new Date().getTime());
-                    console.log("-------------------");
-                    console.log(JSON.parse(ii[i]));
-
-                }
-                loadData(true,this.result);
-            }
-        }
-    </script>
+   
 </body>
-
 </html>
