@@ -449,13 +449,19 @@ function saveNote(key) {
 function loadData(dataByUpload = false,uploadedData = []) {
     //key,value as json，passed to addNote
     if(dataByUpload){
-        for (var i = 0; i < localStorage.length; i++) {
-            deleteNote(localStorage.key(i));
-        }
         uploadedData = JSON.parse(uploadedData);
         for (var d in uploadedData) {
+            //keep the same one when upload same element twice or more times
+            //but generate a id for the duplicate
+            var dataTemp = uploadedData[d];
+            for (var i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i)==d){
+                    d = new Date().getTime();new Date().getTime();
+                }
+            }
             console.log(d);
-            addNote(Number(d), JSON.parse(uploadedData[d]));
+            addNote(Number(d), JSON.parse(dataTemp));
+            saveNote(Number(d));
         }
 
     }else{
