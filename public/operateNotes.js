@@ -459,7 +459,7 @@ function loadData(dataByUpload = false,uploadedData = []) {
             }
             console.log(d);
             addNote(Number(d), JSON.parse(dataTemp));
-            saveNote(Number(d))
+            saveNote(Number(d));
         }
 
     }else{
