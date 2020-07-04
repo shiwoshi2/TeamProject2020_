@@ -132,7 +132,7 @@ function addNote(key = 0, values = []) {
     // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
     // limitInput(contentDiv,inputLimit);
-    saveNoteByIO(id);
+    saveNoteWithoutIO(id);
     broadcastMessage("add",localStorage.getItem(id));
 }
 
@@ -271,8 +271,10 @@ function clearContent(key) {
     if(isText=='true'){
         obj.childNodes[1].innerText = "";
     }else {
-        obj.childNodes[1].firstChild.remove(obj.childNodes[1].firstChild.childNodes);
+        obj.childNodes[1].firstChild.innerHTML = "";
+
     }
+
 }
 function penInput(key) {
     //switch container to svg
@@ -313,9 +315,7 @@ function penInput(key) {
             obj.childNodes[1].setAttribute("contenteditable", "true");
             obj.childNodes[1].removeChild(obj.childNodes[1].firstChild);
             obj.childNodes[1].innerText = tempData[key];
-            // var numSpan = createNumSpan(tempData[key],inputLimit);
-            // obj.appendChild(numSpan);
-            // limitInput(obj.childNodes[1],inputLimit);
+
         }
     }
 }
@@ -339,8 +339,9 @@ function saveNote(key) {
         value['pen'] = obj.childNodes[1].firstChild.outerHTML;
         value['text'] = tempData[key];
     }
-    var color = obj.firstElementChild.childNodes[2];
-    var selectedColor = color.options[color.options.selectedIndex].value;
+
+    var selectedColor = obj.childNodes[1].style.backgroundColor;
+    console.log("test"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
@@ -350,6 +351,7 @@ function saveNote(key) {
     value['id'] = key;
     values.push(value);
     values = JSON.stringify(values);
+    console.log("in the save " +selectedColor);
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
@@ -379,15 +381,12 @@ function loadData(dataByUpload = false,uploadedData = []) {
         }
 
     }else{
-        var idLength = 0;
-        var idArray = [];
+        console.log("DATABYUPLOAD "+dataByUpload);
         for (var i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i);
             var values = localStorage.getItem(key);
             var value = JSON.parse(values);
-            idLength++;
-            idArray.push(key);
-            addNote(key, value);
+            updateNoteWithoutIO(key, value);
         }
     }
 }

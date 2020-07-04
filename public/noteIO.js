@@ -1,13 +1,16 @@
-function deleteNoteByIO(key) {
+
+var tempData = {};
+var tempPenData = {};
+function deleteNoteWithoutIO(key) {
     var obj = document.getElementById(key);
     obj.parentNode.removeChild(obj);
     // localStorage
     localStorage.removeItem(key);
 }
 
-function updateNoteByIO(key = 0, values = []) {
-    console.log("add1123");
-    console.log("key"+typeof key);
+function updateNoteWithoutIO(key = 0, values = []) {
+    console.log("addnote");
+    console.log(values[0]['color']);
     id = key;
     // for (var i = 0; i < localStorage.length; i++) {
     //     if(localStorage.key(i)==key){
@@ -25,18 +28,7 @@ function updateNoteByIO(key = 0, values = []) {
     else {
         divLeft = divOffset;
     }
-    if (values.length == 0) {
 
-        var values = [];
-        var initValue = {};
-        initValue['text'] = "";
-        initValue['color'] = '#EF9A9A';
-        initValue['notePositionLeft'] = divLeft;
-        initValue['notePositionTop'] = divTop;
-        initValue['pen'] = "";
-        initValue['id'] = "";
-        values.push(initValue);
-    }
     tempPenData[id] = values[0]['pen'];
     // Add the note Main content
     var mainDiv = document.createElement("div");
@@ -103,18 +95,15 @@ function updateNoteByIO(key = 0, values = []) {
     clear.setAttribute("onclick", "clearContent('" + id + "')");
     titleDiv.appendChild(clear);
     var contentDiv = createTextContent(values[0]['text'],id,"true");
-    if (values[0]['color']) {
-        contentDiv.style.backgroundColor = values[0]['color'];
-    }
-    // var numSpan = createNumSpan(values[0]["text"],inputLimit);
+    contentDiv.style.backgroundColor = values[0]['color'];
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
-    // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
-    // limitInput(contentDiv,inputLimit);
-    saveNoteByIO(id);
+    console.log("bg "+contentDiv.style.backgroundColor);
+
+    //saveNoteWithoutIO(id);
 }
-function saveNoteByIO(key) {
+function saveNoteWithoutIO(key) {
     //locate mainDiv
     var obj = document.getElementById(key);
     //parent

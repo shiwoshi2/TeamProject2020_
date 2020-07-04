@@ -35,10 +35,9 @@ function recieveMessage(messageType, message) {
     if (messageType == 'update') {
         try {
             var msgValue = JSON.parse(message);
-            console.log("update");
-
-            deleteNoteByIO(msgValue[0]['id']);
-            updateNoteByIO(msgValue[0]['id'],msgValue);
+            console.log("inthe update " +msgValue[0]['color']);
+            deleteNoteWithoutIO(msgValue[0]['id']);
+            updateNoteWithoutIO(msgValue[0]['id'],msgValue);
 
         } catch (error) {
             console.log('cant update:', error);
@@ -46,7 +45,7 @@ function recieveMessage(messageType, message) {
     }
     if (messageType == 'delete') {
         try {
-            deleteNoteByIO(message);
+            deleteNoteWithoutIO(message);
 
         } catch (error) {
             console.log('cant delete:', error);
@@ -57,7 +56,7 @@ function recieveMessage(messageType, message) {
 
             var msgValue = JSON.parse(message);
 
-            updateNoteByIO(msgValue[0]['id'],msgValue);
+            updateNoteWithoutIO(msgValue[0]['id'],msgValue);
 
         } catch (error) {
             console.log('cant delete:', error);
