@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="stylesP.css">
     <link rel="stylesheet" href="notes.css">
-    <script src="operateNotes.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="index.js"></script>
     <script src="ajust.js"></script>
-
+    <script src="sync.js"></script>
+    <script src="noteIO.js"></script>
+    <script src="operateNotes.js"></script>
     
 
     <script src="https://cdn.bootcss.com/jsPlumb/2.6.8/js/jsplumb.min.js"></script>
@@ -60,11 +62,20 @@
 
                 <div class="dropdown-menu" aria-labelledby="menu">
                     <div class="btn-group-vertical">
-                    <button class="btn  btn-default navbutton" onclick= "NoteOffset(800)">
+                    <button class="btn  btn-default navbutton" id="addNote">
                         <span class="navspan"  style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;" ></span>
                     </button>
 
-                   
+                    <button class="btn  btn-default navbutton" id="removeAllNote" >
+                        <span class="navspan"
+                            style="background: url(./images/icon-trash.png) no-repeat;  background-size: 100%;"></span>
+                    </button>
+            
+                    <button class="btn  btn-default navbutton" id="searchNote" >
+                        <span class="navspan"
+                            style="background: url(./images/icon-search.png) no-repeat;  background-size: 100%;"></span>
+                    </button>
+
                     <button class="btn btn-default navbutton" id="cluster" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <span class="navspan"
@@ -74,20 +85,21 @@
                     <div class="btn-group dropup">
                         <div class="dropdown-menu" aria-labelledby="cluster" style="width: 178px;">
                             
-                            <button class="btn  btn-default navbutton" id="clusterColorStickies">
+                             <!-- Heirarchical clustering -->
+                             <button class="btn  btn-default navbutton" id="heirarchical" >
                                 <span class="navspan"
-                                    style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
-
-                            <button class="btn  btn-default navbutton" id="searchNote">
+                                style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
+                                </button>
+                                <!-- K-mean clustering -->
+                                <button class="btn  btn-default navbutton" id="kmean" >
                                 <span class="navspan"
-                                    style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
-
-                            <button class="btn  btn-default navbutton" id="searchNote">
+                                style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
+                                </button>
+                                <!-- Voronoi clustering -->
+                                <button class="btn  btn-default navbutton" id="voronoi" >
                                 <span class="navspan"
-                                    style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
-                            </button>
+                                style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
+                                </button>
 
                         </div>
                     </div>
@@ -96,7 +108,17 @@
             </ul>
         </div>
     </nav>>
+    <script type="text/javascript">
 
+        $(function () {
+            var buttonCreate = $("#addNote");
+            buttonCreate.click(function (evt) {
+                NoteOffset("smartPhone");
+            })
+
+        });
+
+    </script>
 </body>
 
 </html>

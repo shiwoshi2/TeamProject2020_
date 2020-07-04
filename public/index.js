@@ -7,17 +7,17 @@ var bGWidth = 0;
 var socket = io();
 var displaySize = 1030;
 var divOffset = 50;
-function NoteOffset(a){
-    if (a == 2500)
+function NoteOffset(device){
+    if (device == "wall")
     {
         displaySize = 1850;
         divOffset = 200;
     };
 
-    if (a == 800)
+    if (device == "smartPhone")
     {
         displaySize = 500;
         divOffset = 50;
     };
-
+    
 }
