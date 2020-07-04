@@ -123,9 +123,8 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(clear);
 
     var contentDiv = createTextContent(values[0]['text'],id,"true");
-    if (values[0]['color']) {
-        contentDiv.style.backgroundColor = values[0]['color'];
-    }
+
+    contentDiv.style.backgroundColor = values[0]['color'];
     // var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);

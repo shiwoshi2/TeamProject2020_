@@ -101,7 +101,7 @@ function updateNoteWithoutIO(key = 0, values = []) {
     document.body.appendChild(mainDiv);
     console.log("bg "+contentDiv.style.backgroundColor);
 
-    //saveNoteWithoutIO(id);
+    saveNoteWithoutIO(id);
 }
 function saveNoteWithoutIO(key) {
     //locate mainDiv
@@ -122,8 +122,8 @@ function saveNoteWithoutIO(key) {
         value['pen'] = obj.childNodes[1].firstChild.outerHTML;
         value['text'] = tempData[key];
     }
-    var color = obj.firstElementChild.childNodes[2];
-    var selectedColor = color.options[color.options.selectedIndex].value;
+    var selectedColor = obj.childNodes[1].style.backgroundColor;
+    console.log("test"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
