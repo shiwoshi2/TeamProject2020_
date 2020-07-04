@@ -10,26 +10,28 @@ app.use(express.static('public'));
 
 io.on('connection', function (socket) {
     console.log('a user connected');
-    if (svg != '')
-        io.to(socket.id).emit('initsvg', svg)
-        //io.to(socket.id).emit('initsvg', '  ')
+    socket.on('delete', function (msg) {
+        //  console.log('message: ' + msg);
+        socket.broadcast.emit('delete', msg);
+    });
+
+    socket.on('update', function (msg) {
+        // console.log('message: ' + msg);
+        socket.broadcast.emit('update', msg);
+    });
+    socket.on('add', function (msg) {
+        // console.log('message: ' + msg);
+        socket.broadcast.emit('add', msg);
+    });
     socket.on('disconnect', function () {
         console.log('user disconnected');
     });
 });
 
-io.on('connection', function (socket) {
-    socket.on('create', function (msg) {
-      //  console.log('message: ' + msg);
-        socket.broadcast.emit('create', msg);
-    });
 
-    socket.on('save', function (msg) {
-       // console.log('message: ' + msg);
-        socket.broadcast.emit('save', msg);
-    });
-
-});
+// io.on('connection', function (socket) {
+//
+// });
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');

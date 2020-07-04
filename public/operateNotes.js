@@ -5,8 +5,11 @@ var k = 0;
 var inputLimit = 50;
 var tempData = {};
 var tempPenData = {};
+
+
 // Add sticky note
 function addNote(key = 0, values = []) {
+    console.log("add");
     textInputFlag = true;
     var id;
     if (key != 0) {
@@ -16,8 +19,7 @@ function addNote(key = 0, values = []) {
         // ID using time
         id = new Date().getTime();
     }
-    console.log(displaySize);
-    console.log(divOffset);
+
     // Location when "add" was hit
     if (divLeft != 0) {
         divLeft += 260;
@@ -39,6 +41,7 @@ function addNote(key = 0, values = []) {
         initValue['notePositionLeft'] = divLeft;
         initValue['notePositionTop'] = divTop;
         initValue['pen'] = "";
+        initValue['id'] = "";
         values.push(initValue);
     }
 
@@ -77,7 +80,7 @@ function addNote(key = 0, values = []) {
     // ==============================================================================================
     // Set color of the background
     var colorBg = document.createElement("select");
-    
+
     colorBg.setAttribute("class", "colorBg");
     colorBg.options.add(new Option("", "#EF9A9A"));
     colorBg.options.add(new Option("", "#CE93D8"));
@@ -129,6 +132,8 @@ function addNote(key = 0, values = []) {
     // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
     // limitInput(contentDiv,inputLimit);
+    saveNoteByIO(id);
+    broadcastMessage("add",localStorage.getItem(id));
 }
 
 // Move the note
@@ -139,92 +144,17 @@ var _offsetX = 0;
 var _offsetY = 0;
 var z = 0;
 var noteLocation;
-function createNumSpan(text,inputLimit) {
-    // var intNum = document.createElement("div");
-    var numSpan = document.createElement("span");
-    numSpan.setAttribute("class","counter");
-    numSpan.innerText = text.length+"/"+inputLimit;
-    return numSpan;
-}
 function createTextContent(text,id,isText){
     // only text input editable
     var contentDiv = document.createElement("div");
     contentDiv.innerText = text;
     contentDiv.setAttribute("class", "noteContent");
     contentDiv.setAttribute("contenteditable", "true");
-    //contentDiv.setAttribute("onblur", "saveNote('" + id + "')");
     contentDiv.setAttribute("textInput",isText);
     contentDiv.style.width = "100%";
     contentDiv.style.height = 192+'px';
     return contentDiv;
 }
-
-function limitInput(noteContent,length=10) {
-    //reference source https://codepen.io/ramonsenadev/pen/jywRQg by 25.06.2020
-    var counter = noteContent.parentNode.childNodes[2];
-    input = noteContent;
-    settings = {
-        maxLen: length,
-    }
-    keys = {
-        'backspace': 8,
-        'shift': 16,
-        'ctrl': 17,
-        'alt': 18,
-        'delete': 46,
-        // 'cmd':
-        'leftArrow': 37,
-        'upArrow': 38,
-        'rightArrow': 39,
-        'downArrow': 40,
-    }
-    utils = {
-        special: {},
-        navigational: {},
-        isSpecial(e) {
-            return typeof this.special[e.keyCode] !== 'undefined';
-        },
-        isNavigational(e) {
-            return typeof this.navigational[e.keyCode] !== 'undefined';
-        }
-    }
-    utils.special[keys['backspace']] = true;
-    utils.special[keys['shift']] = true;
-    utils.special[keys['ctrl']] = true;
-    utils.special[keys['alt']] = true;
-    utils.special[keys['delete']] = true;
-    utils.navigational[keys['upArrow']] = true;
-    utils.navigational[keys['downArrow']] = true;
-    utils.navigational[keys['leftArrow']] = true;
-    utils.navigational[keys['rightArrow']] = true;
-    input.addEventListener('keyup', function(event) {
-        let len = event.target.innerText.trim().length;
-        counter.innerHTML = len+"/"+length;
-        if (len >= settings.maxLen && !hasSelection) {
-            event.preventDefault();
-            return false;
-        }
-    });
-    input.addEventListener('keydown', function(event) {
-        let len = event.target.innerText.trim().length;
-        hasSelection = false;
-        selection = window.getSelection();
-        isSpecial = utils.isSpecial(event);
-        isNavigational = utils.isNavigational(event);
-
-        if (selection) {
-            hasSelection = !!selection.toString();
-        }
-        if (isSpecial || isNavigational) {
-            return true;
-        }
-        if (len >= settings.maxLen && !hasSelection) {
-            event.preventDefault();
-            return false;
-        }
-    });
-}
-
 function mousedownHandler(e) {
 
     if (e.target.className == 'noteTitle') {
@@ -317,7 +247,6 @@ function mousedownHandler(e) {
             // var touch_y = e.targetTouches[0].pageY;
             function touchMove(e)
             {
-
                 var touch_x = e.targetTouches[0].clientX;
                 var touch_y = e.targetTouches[0].clientY;
                 var radians = Math.atan2(touch_x - center_x, touch_y - center_y);
@@ -390,19 +319,10 @@ function penInput(key) {
         }
     }
 }
-
-function textInput(key) {
-    //switch container back to text
-    var obj = document.getElementById(key);
-    var nodeName = obj.childNodes[1].nodeName;
-
-}
 //store note
 function saveNote(key) {
-
     //locate mainDiv
     var obj = document.getElementById(key);
-
     //parent
     var values = [];
     //record each node's value
@@ -410,39 +330,31 @@ function saveNote(key) {
     //array for text input lists
     var textValueList = [];
     //save text and peninput
-
-
     //console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         value['text'] = obj.childNodes[1].innerText;
         value['pen'] =tempPenData[key];
-        //console.log(value['pen']);
-
     }else {
-        //console.log(obj.childNodes[1].firstChild);
         value['pen'] = obj.childNodes[1].firstChild.outerHTML;
-        //console.log(value['pen']);
         value['text'] = tempData[key];
     }
     var color = obj.firstElementChild.childNodes[2];
     var selectedColor = color.options[color.options.selectedIndex].value;
     value['color'] = selectedColor;
-
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
     //console.log("notePosition " + notePositionLeft, notePositionTop);
     value['notePositionLeft'] = notePositionLeft.replace("px", "");
     value['notePositionTop'] = notePositionTop.replace("px", "");
-
+    value['id'] = key;
     values.push(value);
     values = JSON.stringify(values);
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
-        //console.log(values);
-
     }
+    broadcastMessage("update",values);
 }
 
 //reload from local
@@ -456,12 +368,14 @@ function loadData(dataByUpload = false,uploadedData = []) {
             var dataTemp = uploadedData[d];
             for (var i = 0; i < localStorage.length; i++) {
                 if(localStorage.key(i)==d){
-                    d = new Date().getTime();new Date().getTime();
+                    var obj = document.getElementById(d);
+                    obj.parentNode.removeChild(obj);
+                    // localStorage
+                    localStorage.removeItem(d);
                 }
             }
             console.log(d);
             addNote(Number(d), JSON.parse(dataTemp));
-            saveNote(Number(d));
         }
 
     }else{
@@ -476,16 +390,17 @@ function loadData(dataByUpload = false,uploadedData = []) {
             addNote(key, value);
         }
     }
-
-
 }
 //delete note
 function deleteNote(key) {
+    console.log(typeof key);
+    broadcastMessage("delete",key);
     var obj = document.getElementById(key);
     obj.parentNode.removeChild(obj);
     // localStorage
     localStorage.removeItem(key);
 }
+
 //clear all
 function deleteNotesAll() {
     localStorage.clear();
@@ -496,9 +411,7 @@ function deleteNotesAll() {
 function changeColor(id) {
     var obj = document.getElementById(id);
     var color = obj.firstElementChild.childNodes[2];
-    console.log(color.options);
-    console.log(color.options.selectedIndex);
-    console.log(color.options[color.options.selectedIndex]);
+
     //just a guessing
     var selectedColor = color.options[color.options.selectedIndex].value;
 
@@ -512,7 +425,7 @@ function mouseupHandler(e) {
     //$('html,body').removeAttr('style');
     document.removeEventListener("touchmove", mousemoveHandler, false);
     saveNote(e.target.parentNode.id);
-
+    //broadcastMessage("update",localStorage.getItem(e.target.parentNode.id));
     // document.removeEventListener("mousemove", mousemoveHandler, false);
 
 }
@@ -618,7 +531,7 @@ function heirarchical_clustering() {
         }
 
     }
-    // console.log(arr[0].length);      
+    // console.log(arr[0].length);
     // Get the dimensions of the screen
     var height = window.screen.height;
     var width = window.screen.width;
@@ -902,7 +815,7 @@ function kmean(sticky_positions, centroids, k, arr) {
         var x = 0;
         var y = 0;
         var count = 0;
-        for (var j = 0; j < sticky_positions.length; j++) { // All stickies in a given cluster  
+        for (var j = 0; j < sticky_positions.length; j++) { // All stickies in a given cluster
             for (var k = 0; k < sticky_positions.length; k++) {
                 if (parseInt(all_dist_colors[i][j][0]) === parseInt(sticky_positions[k][0])) {
                     count++;
