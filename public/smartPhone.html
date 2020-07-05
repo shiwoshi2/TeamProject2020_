@@ -66,44 +66,40 @@
                         <span class="navspan"  style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;" ></span>
                     </button>
 
-                    <button class="btn  btn-default navbutton" id="removeAllNote" >
-                        <span class="navspan"
-                            style="background: url(./images/icon-trash.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
-            
-                    <button class="btn  btn-default navbutton" id="searchNote" >
-                        <span class="navspan"
-                            style="background: url(./images/icon-search.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
+                    <button class="btn btn-default" id="cluster">
+                        <span class="navspan"  style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;" ></span>
+                     </button>
 
-                    <button class="btn btn-default navbutton" id="cluster" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <span class="navspan"
-                            style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;"></span>
-                    </button>
+                
+                        <div class="dropdown-menu" id="cluster-menu" style="
+                        
+                        position: fixed;
+                        width:172px;
+                        top: 40px;
+                        
+                        ">
+                            <div class="btn-group">
+                                
 
-                    <div class="btn-group dropup">
-                        <div class="dropdown-menu" aria-labelledby="cluster" style="width: 178px;">
+                                    <!-- Heirarchical clustering -->
+                                    <button class="btn  btn-default navbutton" id="heirarchical" >
+                                    <span class="navspan"
+                                    style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
+                                    </button>
+                                    <!-- K-mean clustering -->
+                                    <button class="btn  btn-default navbutton" id="kmean" >
+                                    <span class="navspan"
+                                    style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
+                                    </button>
+                                    <!-- Voronoi clustering -->
+                                    <button class="btn  btn-default navbutton" id="voronoi" >
+                                    <span class="navspan"
+                                    style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
+                                    </button>
                             
-                             <!-- Heirarchical clustering -->
-                             <button class="btn  btn-default navbutton" id="heirarchical" >
-                                <span class="navspan"
-                                style="background: url(./images/icon-arch.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
-                                <!-- K-mean clustering -->
-                                <button class="btn  btn-default navbutton" id="kmean" >
-                                <span class="navspan"
-                                style="background: url(./images/icon-cluster1.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
-                                <!-- Voronoi clustering -->
-                                <button class="btn  btn-default navbutton" id="voronoi" >
-                                <span class="navspan"
-                                style="background: url(./images/icon-cluster2.png) no-repeat;  background-size: 100%;"></span>
-                                </button>
-
+                            </div>
                         </div>
-                    </div>
-
+                        
                 </li>
             </ul>
         </div>
@@ -119,6 +115,17 @@
         });
 
     </script>
+
+<script type="text/javascript">
+    $(function(){
+        var a = $("#cluster");
+        a.click(function(evt){
+            evt.stopPropagation();
+            $("#cluster-menu").toggleClass("show");
+        })
+    });
+    
+</script>
 </body>
 
 </html>
