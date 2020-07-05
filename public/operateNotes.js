@@ -341,6 +341,8 @@ function saveNote(key) {
 
     var selectedColor = obj.childNodes[1].style.backgroundColor;
     console.log("test"+selectedColor);
+    selectedColor = colorRGBtoHex(selectedColor);
+    console.log("transfer"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
@@ -473,7 +475,6 @@ function init() {
 
 
 function heirarchical_clustering() {
-
     // Array creation
     var arr = new Array(10);
     for (var i = 0; i < 10; i++) {
@@ -496,6 +497,8 @@ function heirarchical_clustering() {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
+        console.log(value[0]['color']== "#EF9A9A");
+
 
         if (value[0].color == "#EF9A9A") {
             arr[0].push(key);
@@ -539,6 +542,7 @@ function heirarchical_clustering() {
 
     for (var i = 0; i < 10; i++) {
         var count = arr[i].length;
+
         if (count > 0) {
             pos_x = start_x, pos_y = start_y;
             for (var j = 0; j < count; j++) {
@@ -631,11 +635,11 @@ function move_position_sticky(search_text) {
 function sticky_position_change(key, new_x, new_y) {
     document.getElementById(key).style.left = new_x + "px";
     document.getElementById(key).style.top = new_y + "px";
-   // saveNote(key);
+    //saveNote(key);
 }
 
 function kmean_clustering() {
-
+    console.log("kmean hit");
     // Array creation
     var arr = new Array(10);
     for (var i = 0; i < 10; i++) {

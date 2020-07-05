@@ -124,6 +124,8 @@ function saveNoteWithoutIO(key) {
     }
     var selectedColor = obj.childNodes[1].style.backgroundColor;
     console.log("test"+selectedColor);
+    selectedColor = colorRGBtoHex(selectedColor);
+    console.log("transfer"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
