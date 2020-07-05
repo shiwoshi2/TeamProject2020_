@@ -3,9 +3,6 @@ console.log("Welcome to the application: Running....");
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-const bodyParser = require('body-parser');
-
-let svg = '';
 app.use(express.static('public'));
 
 io.on('connection', function (socket) {
@@ -28,10 +25,7 @@ io.on('connection', function (socket) {
     });
 });
 
-
-// io.on('connection', function (socket) {
-//
-// });
+//for mde: use server's ipv4 address+port
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');

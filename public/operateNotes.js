@@ -2,15 +2,12 @@
 var divTop = 50;
 var divLeft = 0;
 var k = 0;
-var inputLimit = 50;
+//store text and pen input
 var tempData = {};
 var tempPenData = {};
 
-
 // Add sticky note
 function addNote(key = 0, values = []) {
-    console.log("add");
-    textInputFlag = true;
     var id;
     if (key != 0) {
         id = key;
@@ -19,7 +16,6 @@ function addNote(key = 0, values = []) {
         // ID using time
         id = new Date().getTime();
     }
-
     // Location when "add" was hit
     if (divLeft != 0) {
         divLeft += 260;
@@ -33,7 +29,7 @@ function addNote(key = 0, values = []) {
     }
 
     if (values.length == 0) {
-
+        //inital
         var values = [];
         var initValue = {};
         initValue['text'] = "";
@@ -44,20 +40,16 @@ function addNote(key = 0, values = []) {
         initValue['id'] = "";
         values.push(initValue);
     }
-
-
+    //store text and pen input
     tempPenData[id] = values[0]['pen'];
     // Add the note Main content
     var mainDiv = document.createElement("div");
     mainDiv.setAttribute("class", "note");
     mainDiv.setAttribute("id", id);
     mainDiv.setAttribute("style", "top:" + values[0]['notePositionTop'] + "px;left:" + values[0]['notePositionLeft'] + "px");
-
     // Title Div
     var titleDiv = document.createElement("div");
     titleDiv.setAttribute("class", "noteTitle");
-
-
     // Operations supported on sticky note
     // ==============================================================================================
     // Add note img
@@ -66,9 +58,7 @@ function addNote(key = 0, values = []) {
     addImg.setAttribute("class", "addIcon");
     // Add note
     addImg.setAttribute("onclick", "addNote()");
-
     titleDiv.appendChild(addImg);
-
     // Add deletenote image
     var delImg = document.createElement("img");
     delImg.setAttribute("src", "images/icon-delete.png");
@@ -76,11 +66,9 @@ function addNote(key = 0, values = []) {
     // Delete
     delImg.setAttribute("onclick", "deleteNote('" + id + "')");
     titleDiv.appendChild(delImg);
-
     // ==============================================================================================
     // Set color of the background
     var colorBg = document.createElement("select");
-
     colorBg.setAttribute("class", "colorBg");
     colorBg.options.add(new Option("", "#EF9A9A"));
     colorBg.options.add(new Option("", "#CE93D8"));
@@ -93,7 +81,6 @@ function addNote(key = 0, values = []) {
     colorBg.options.add(new Option("", "#F48FB1"));
     colorBg.options.add(new Option("", "#9FA8DA"));
     colorBg.setAttribute("onclick", "changeColor('" + id + "')");
-
     titleDiv.appendChild(colorBg);
 
     // Save button
@@ -107,20 +94,10 @@ function addNote(key = 0, values = []) {
     var penInput = document.createElement("img");
     penInput.setAttribute("src", "images/icon-pen28.png");
     penInput.setAttribute("class", "penInput");
-    // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
-    // console.log("here2");
-    // penInput.onclick=function(penInput) {
-    //     // console.log("here");
-    //     // penInput("'" + id + "'");
-
-    //     // penInput.classList.toggle("text_execute");
-    //     document.querySelector("#" + id + " .penInput");
-    // document.getElementsByClassName
-    // }
-    // document.querySelector() 
     titleDiv.appendChild(penInput);
 
+    // rotate button
     var rotateNote = document.createElement("img");
     rotateNote.setAttribute("src", "images/icon-rotate.png");
     rotateNote.setAttribute("class", "rotateNote");
@@ -133,14 +110,11 @@ function addNote(key = 0, values = []) {
     titleDiv.appendChild(clear);
 
     var contentDiv = createTextContent(values[0]['text'],id,"true");
-
     contentDiv.style.backgroundColor = values[0]['color'];
-    // var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
-    // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
-    // limitInput(contentDiv,inputLimit);
+
     saveNoteWithoutIO(id);
     broadcastMessage("add",localStorage.getItem(id));
 }
@@ -165,8 +139,8 @@ function createTextContent(text,id,isText){
     return contentDiv;
 }
 function mousedownHandler(e) {
-
-    if (e.target.className == 'noteTitle') {
+    if (e.target.className == 'noteTitle'||e.target.className == "noteContent") {
+        //move the note
         //locate the note
         var noteId = e.target.parentElement.getAttribute("id");
         dragObj = document.getElementById(noteId);
@@ -180,28 +154,26 @@ function mousedownHandler(e) {
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
         document.addEventListener("touchmove", mousemoveHandler, false);
-        //dierctly way to do
-        //$('html,body').css('height', '100%').css('overflow', 'hidden');
-        //console.log(color.options.selectedIndex);
     }
-    if (e.target.className == "noteContent") {
-        console.log("notecontent touched");
-        var noteId = e.target.parentElement.getAttribute("id");
-        dragObj = document.getElementById(noteId);
-        // changeColor(noteId);
-        var t = dragObj.style.top;
-        var l = dragObj.style.left;
-        z += 1;
-        dragObj.setAttribute("style", "top:" + t + ";left:" + l + ";z-index:" + z);
-        _startX = e.targetTouches[0].clientX;
-        _startY = e.targetTouches[0].clientY;
-        _offsetX = dragObj.offsetLeft;
-        _offsetY = dragObj.offsetTop;
-        document.addEventListener("touchmove", mousemoveHandler, false);
-    }
+    // if (e.target.className == "noteContent") {
+    //     //also moving
+    //     //
+    //     var noteId = e.target.parentElement.getAttribute("id");
+    //     dragObj = document.getElementById(noteId);
+    //     // changeColor(noteId);
+    //     var t = dragObj.style.top;
+    //     var l = dragObj.style.left;
+    //     z += 1;
+    //     dragObj.setAttribute("style", "top:" + t + ";left:" + l + ";z-index:" + z);
+    //     _startX = e.targetTouches[0].clientX;
+    //     _startY = e.targetTouches[0].clientY;
+    //     _offsetX = dragObj.offsetLeft;
+    //     _offsetY = dragObj.offsetTop;
+    //     document.addEventListener("touchmove", mousemoveHandler, false);
+    // }
     if(e.target.getAttribute("class") == 'svgContent'){
-        // //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
-
+        //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
+        //pen or text input
         var noteId = e.target.parentElement.parentElement.getAttribute("id");
         var svgContent  = document.getElementById(noteId).childNodes[1].firstChild;
         noteLocation = svgContent.parentElement.parentElement;
@@ -242,18 +214,14 @@ function mousedownHandler(e) {
     }
     if(e.target.className == 'rotateNote'){
         //source https://stackoverflow.com/questions/11051676/rotating-div-with-mouse-move
-        //console.log("rotate");
         var noteId = e.target.parentNode.parentNode.getAttribute("id");
         var obj = document.getElementById(noteId);
-        //obj.style.transform = "rotate(90deg)";
-        //as width = 180, width = 170
+        //best effet as width = 180, width = 170
         var rotateButton = obj.childNodes[0].childNodes[5];
         rotateButton.addEventListener("touchstart",function(e){
             e.preventDefault();
             var center_x =(obj.offsetLeft)+(90);
             var center_y = (obj.offsetTop)+ (85);
-            // var touch_x = e.targetTouches[0].pageX;
-            // var touch_y = e.targetTouches[0].pageY;
             function touchMove(e)
             {
                 var touch_x = e.targetTouches[0].clientX;
@@ -273,15 +241,14 @@ function mousedownHandler(e) {
     }
 }
 
+
 function clearContent(key) {
-    console.log("clear");
     var obj = document.getElementById(key);
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         obj.childNodes[1].innerText = "";
     }else {
         obj.childNodes[1].firstChild.innerHTML = "";
-
     }
 
 }
@@ -339,7 +306,6 @@ function saveNote(key) {
     //array for text input lists
     var textValueList = [];
     //save text and peninput
-    //console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         value['text'] = obj.childNodes[1].innerText;
@@ -356,17 +322,16 @@ function saveNote(key) {
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
-    //console.log("notePosition " + notePositionLeft, notePositionTop);
     value['notePositionLeft'] = notePositionLeft.replace("px", "");
     value['notePositionTop'] = notePositionTop.replace("px", "");
     value['id'] = key;
     values.push(value);
     values = JSON.stringify(values);
-    console.log("in the save " +selectedColor);
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
     }
+    //everyone gets the update
     broadcastMessage("update",values);
 }
 
@@ -376,23 +341,21 @@ function loadData(dataByUpload = false,uploadedData = []) {
     if(dataByUpload){
         uploadedData = JSON.parse(uploadedData);
         for (var d in uploadedData) {
-            //keep the same one when upload same element twice or more times
-            //but generate a id for the duplicate
+            //overwrite the note with the uploaded note when id is same
             var dataTemp = uploadedData[d];
             for (var i = 0; i < localStorage.length; i++) {
                 if(localStorage.key(i)==d){
                     var obj = document.getElementById(d);
                     obj.parentNode.removeChild(obj);
-                    // localStorage
                     localStorage.removeItem(d);
                 }
             }
-            console.log(d);
+            //this cause everyone can get the uploaded json data
+            //I think it is suitable for group work
             addNote(Number(d), JSON.parse(dataTemp));
         }
-
     }else{
-        console.log("DATABYUPLOAD "+dataByUpload);
+        //refresh the brower without traggering the broadcast issues
         for (var i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i);
             var values = localStorage.getItem(key);
@@ -407,7 +370,6 @@ function deleteNote(key) {
     broadcastMessage("delete",key);
     var obj = document.getElementById(key);
     obj.parentNode.removeChild(obj);
-    // localStorage
     localStorage.removeItem(key);
 }
 
@@ -421,37 +383,24 @@ function deleteNotesAll() {
 function changeColor(id) {
     var obj = document.getElementById(id);
     var color = obj.firstElementChild.childNodes[2];
-
     //just a guessing
     var selectedColor = color.options[color.options.selectedIndex].value;
-
     obj.childNodes[1].style.backgroundColor = selectedColor;
     saveNote(id);
-
 }
 
 function mouseupHandler(e) {
-    // //after moving it will save the note automatically
-    //$('html,body').removeAttr('style');
+    //after moving it will save the note automatically
     document.removeEventListener("touchmove", mousemoveHandler, false);
     saveNote(e.target.parentNode.id);
-    //broadcastMessage("update",localStorage.getItem(e.target.parentNode.id));
-    // document.removeEventListener("mousemove", mousemoveHandler, false);
-
 }
+
 function mousemoveHandler(e) {
     dragObj.style.left = (_offsetX + e.targetTouches[0].clientX - _startX) + 'px';
     dragObj.style.top = (_offsetY + e.targetTouches[0].clientY - _startY) + 'px';
-
-}
-
-function getMousePos(event) {
-    var e = event || window.event;
-    return { 'x': e.clientX, 'y': clientY }
 }
 
 window.addEventListener("load", init, false);
-
 
 function init() {
     // Adding event listener for adding note
@@ -483,7 +432,6 @@ function init() {
     document.addEventListener("touchend", mouseupHandler, false);
 }
 
-
 function heirarchical_clustering() {
     // Array creation
     var arr = new Array(10);
@@ -507,8 +455,6 @@ function heirarchical_clustering() {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
-        console.log(value[0]['color']== "#EF9A9A");
-
 
         if (value[0].color == "#EF9A9A") {
             arr[0].push(key);
@@ -573,7 +519,6 @@ function heirarchical_clustering() {
 }
 
 function searchSticky() {
-
     var h = window.screen.height - 280;
     var w = window.screen.width - 500;
     var input = document.createElement("input");
@@ -598,11 +543,7 @@ function searchSticky() {
         if (event.keyCode == 27) {
             document.getElementById("tbInputText").remove();
         }
-
-
-
     });
-
 }
 
 function move_position_sticky(search_text) {
@@ -616,7 +557,6 @@ function move_position_sticky(search_text) {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
-
 
         var str1 = value[0].text; // Text in stickies
         var n = str1.search(new RegExp(search_text, "i"));
@@ -642,6 +582,7 @@ function move_position_sticky(search_text) {
 
 }
 
+//call saveNote as broadcast the change, it depends on the situation
 function sticky_position_change(key, new_x, new_y) {
     document.getElementById(key).style.left = new_x + "px";
     document.getElementById(key).style.top = new_y + "px";

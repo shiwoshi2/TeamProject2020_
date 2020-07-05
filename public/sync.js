@@ -1,21 +1,16 @@
-
-
-
+//basic io issues because limited time and lab access
 function broadcastMessage(messageType, element) {
     socket.emit(messageType, element);
 
 }
 
 socket.on('update', function (msg) {
-
     if (msg == null || msg === null || msg == 'null') {
         console.log('null found');
     } else
         recieveMessage('update', msg);
-
 });
 socket.on('delete', function (msg) {
-
     if (msg == null || msg === null || msg == 'null') {
         console.log('null found');
     } else
@@ -23,22 +18,19 @@ socket.on('delete', function (msg) {
 
 });
 socket.on('add', function (msg) {
-
     if (msg == null || msg === null || msg == 'null') {
         console.log('null found');
     } else
         recieveMessage('add', msg);
 
 });
-function recieveMessage(messageType, message) {
 
+function recieveMessage(messageType, message) {
     if (messageType == 'update') {
         try {
             var msgValue = JSON.parse(message);
-            console.log("inthe update " +msgValue[0]['color']);
             deleteNoteWithoutIO(msgValue[0]['id']);
             updateNoteWithoutIO(msgValue[0]['id'],msgValue);
-
         } catch (error) {
             console.log('cant update:', error);
         }
@@ -53,9 +45,7 @@ function recieveMessage(messageType, message) {
     }
     if (messageType == 'add') {
         try {
-
             var msgValue = JSON.parse(message);
-
             updateNoteWithoutIO(msgValue[0]['id'],msgValue);
 
         } catch (error) {

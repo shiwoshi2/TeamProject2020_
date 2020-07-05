@@ -140,6 +140,7 @@
 
     <script type="text/javascript">
 
+         //download as the screenshot and the json file for data saving
          function save() {
              console.log("download png");
              html2canvas(document.body).then(canvas => {
@@ -161,21 +162,15 @@
          }
 
         function upload(){
+            //upload json
             document.getElementById("files").click();
         }
         function fileImport() {
+            //extract the data and call the addnote function
             var selectedFile = document.getElementById('files').files[0];
             var reader = new FileReader();
             reader.readAsText(selectedFile);
             reader.onload = function () {
-                console.log(this.result);
-                var ii =JSON.parse(this.result);
-                for(var i in ii){
-                    console.log(i+typeof Number(i)+typeof new Date().getTime());
-                    console.log("-------------------");
-                    console.log(JSON.parse(ii[i]));
-
-                }
                 loadData(true,this.result);
             }
         }

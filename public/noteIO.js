@@ -1,4 +1,6 @@
-
+//these functions are not include the broadcast function
+//and the functions are as almost same as the functions in the operate.js
+//so that no infinite loop when server broadcast
 var tempData = {};
 var tempPenData = {};
 function deleteNoteWithoutIO(key) {
@@ -12,12 +14,6 @@ function updateNoteWithoutIO(key = 0, values = []) {
     console.log("addnote");
     console.log(values[0]['color']);
     id = key;
-    // for (var i = 0; i < localStorage.length; i++) {
-    //     if(localStorage.key(i)==key){
-    //         d = new Date().getTime();new Date().getTime();
-    //     }
-    // }
-    // Location when "add" was hit
     if (divLeft != 0) {
         divLeft += 260;
         if (divLeft >= displaySize) {
@@ -28,7 +24,6 @@ function updateNoteWithoutIO(key = 0, values = []) {
     else {
         divLeft = divOffset;
     }
-
     tempPenData[id] = values[0]['pen'];
     // Add the note Main content
     var mainDiv = document.createElement("div");
