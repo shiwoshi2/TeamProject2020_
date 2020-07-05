@@ -341,6 +341,8 @@ function saveNote(key) {
 
     var selectedColor = obj.childNodes[1].style.backgroundColor;
     console.log("test"+selectedColor);
+    selectedColor = colorRGBtoHex(selectedColor);
+    console.log("transfer"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
@@ -473,7 +475,6 @@ function init() {
 
 
 function heirarchical_clustering() {
-
     // Array creation
     var arr = new Array(10);
     for (var i = 0; i < 10; i++) {
@@ -496,6 +497,8 @@ function heirarchical_clustering() {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
+        console.log(value[0]['color']== "#EF9A9A");
+
 
         if (value[0].color == "#EF9A9A") {
             arr[0].push(key);
@@ -529,7 +532,7 @@ function heirarchical_clustering() {
         }
 
     }
-    // console.log(arr[0].length);
+    // console.log(arr[0].length);      
     // Get the dimensions of the screen
     var height = window.screen.height;
     var width = window.screen.width;
@@ -539,6 +542,7 @@ function heirarchical_clustering() {
 
     for (var i = 0; i < 10; i++) {
         var count = arr[i].length;
+
         if (count > 0) {
             pos_x = start_x, pos_y = start_y;
             for (var j = 0; j < count; j++) {
@@ -631,11 +635,11 @@ function move_position_sticky(search_text) {
 function sticky_position_change(key, new_x, new_y) {
     document.getElementById(key).style.left = new_x + "px";
     document.getElementById(key).style.top = new_y + "px";
-    saveNote(key);
+    //saveNote(key);
 }
 
 function kmean_clustering() {
-
+    console.log("kmean hit");
     // Array creation
     var arr = new Array(10);
     for (var i = 0; i < 10; i++) {
@@ -695,7 +699,7 @@ function kmean_clustering() {
     var count = 0;
     // Different colors used
     for (var i = 0; i < 10; i++) {
-        if (arr[i] != 0) count++;
+        if (arr[i] > 0) count++;
     }
 
     // centroids arrays.
@@ -705,18 +709,34 @@ function kmean_clustering() {
     for (var i = 0; i < count; i++) {
         centroids[i] = random_position();
     }
+    var kk = 0;
+    while(kk<5){
+        var all_dist_colors = kmean(sticky_positions, centroids, count, arr);
+        // console.log(sticky_positions);
+        // console.log(centroids);
 
-    var all_dist_colors = kmean(sticky_positions, centroids, count, arr);
-    // console.log(sticky_positions);
-    // console.log(centroids);
-
-    for (var i = 0; i < all_dist_colors.length; i++) {
-        for (var j = 0; j < sticky_positions.length; j++) {
-            if (all_dist_colors[i][j][1] !== -1){
-                sticky_position_change(all_dist_colors[i][j][0], all_dist_colors[i][j][3], all_dist_colors[i][j][4]);
+        for (var i = 0; i < all_dist_colors.length; i++) {
+            var x_avg = 0;
+            var y_avg = 0;
+            var count_avg = 0;
+            for (var j = 0; j < sticky_positions.length; j++) {
+                if (all_dist_colors[i][j][1] !== -1){
+                    sticky_position_change(all_dist_colors[i][j][0], all_dist_colors[i][j][3], all_dist_colors[i][j][4]);
+                    x_avg += parseFloat(all_dist_colors[i][j][3]);
+                    y_avg += parseFloat(all_dist_colors[i][j][4]);
+                    count_avg++;
+                }
             }
+            centroids[i][0] = x_avg/count_avg;
+            centroids[i][1] = y_avg/count_avg;
         }
+        kk++;
+        all_dist_colors = [];
     }
+
+
+
+
 
 
 }
@@ -775,7 +795,7 @@ function kmean(sticky_positions, centroids, k, arr) {
         for (var i = 0; i < sticky_positions.length; i++) {
             if (all_dist_colors[cluster_id][i][2] !== -1) {
                 for (var j = 0; j < k; j++) {
-                    if (j !== cluster_id) {
+                    if (j > cluster_id) {
                         // temp : [cost, swap_index_best]
                         var temp = cost_eval(all_dist_colors[cluster_id][i][2], all_dist_colors[j]);
                         if (temp[0] === 1 && temp[1] < cost) {
@@ -794,17 +814,20 @@ function kmean(sticky_positions, centroids, k, arr) {
         }
         //////// Swap here
         if (swap_check === 1) {
-            var ori_x = all_dist_colors[x1][x2][3];
-            var ori_y = all_dist_colors[x1][x2][4];
-            all_dist_colors[x1][x2] = swap_y;
-            all_dist_colors[x1][x2][3] = ori_x;
-            all_dist_colors[x1][x2][4] = ori_y;
 
-            ori_x = all_dist_colors[y1][y2][3];
-            ori_y = all_dist_colors[y1][y2][4];
-            all_dist_colors[y1][y2] = swap_x;
-            all_dist_colors[y1][y2][3] = ori_x;
-            all_dist_colors[y1][y2][4] = ori_y;
+            var temp1 = all_dist_colors[x1][x2];
+            var temp2_a = all_dist_colors[y1][y2][3];
+            var temp2_b = all_dist_colors[y1][y2][4];
+
+            all_dist_colors[x1][x2] = all_dist_colors[y1][y2];
+            all_dist_colors[y1][y2] = temp1;
+
+            all_dist_colors[x1][x2][3] = temp1[3];
+            all_dist_colors[x1][x2][4] = temp1[4];
+
+            all_dist_colors[y1][y2][3] = temp2_a;
+            all_dist_colors[y1][y2][4] = temp2_b;
+
         }
     }
 
@@ -813,7 +836,7 @@ function kmean(sticky_positions, centroids, k, arr) {
         var x = 0;
         var y = 0;
         var count = 0;
-        for (var j = 0; j < sticky_positions.length; j++) { // All stickies in a given cluster
+        for (var j = 0; j < sticky_positions.length; j++) { // All stickies in a given cluster  
             for (var k = 0; k < sticky_positions.length; k++) {
                 if (parseInt(all_dist_colors[i][j][0]) === parseInt(sticky_positions[k][0])) {
                     count++;
