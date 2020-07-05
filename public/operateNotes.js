@@ -109,6 +109,16 @@ function addNote(key = 0, values = []) {
     penInput.setAttribute("class", "penInput");
     // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
+    // console.log("here2");
+    // penInput.onclick=function(penInput) {
+    //     // console.log("here");
+    //     // penInput("'" + id + "'");
+
+    //     // penInput.classList.toggle("text_execute");
+    //     document.querySelector("#" + id + " .penInput");
+    // document.getElementsByClassName
+    // }
+    // document.querySelector() 
     titleDiv.appendChild(penInput);
 
     var rotateNote = document.createElement("img");
@@ -280,7 +290,7 @@ function penInput(key) {
     //locate mainDiv
     var obj = document.getElementById(key);
     var nodeName = obj.childNodes[1].nodeName;
-
+    obj.getElementsByClassName('penInput')[0].classList.toggle('text_execute');
     if(nodeName == "DIV"){
         var isTextInput = obj.childNodes[1].getAttribute("textInput");
         console.log("pen "+isTextInput);

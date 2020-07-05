@@ -58,6 +58,7 @@
 
 .text_execute{
     border: 1px solid black;
+    background-color: #81D4FA;
 }
 .rotateNote {
     border: none;
