@@ -55,6 +55,10 @@
     font-size: 2px;
 
 }
+
+.text_execute{
+    border: 1px solid black;
+}
 .rotateNote {
     border: none;
     appearance: none;
