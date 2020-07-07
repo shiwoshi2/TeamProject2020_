@@ -2,7 +2,7 @@
     /*position: fixed;*/
     width: 100%;
     height: 100%;
-    background-image:url(images/grid.png);
+   
   }
   
  
@@ -54,7 +54,7 @@
 }
 
 .dropdown-menu {
-    width: 608px;;
+    width: 456px;;
     min-width: 54px;
     height: fit-content; 
    /* padding-bottom: 5px;

@@ -548,7 +548,7 @@ function heirarchical_clustering() {
     var width = window.screen.width;
 
     var pos_x = 0, pos_y = 0;
-    var start_x = 0, start_y = 0;
+    var start_x = 200, start_y = 0;
 
     for (var i = 0; i < 10; i++) {
         var count = arr[i].length;
@@ -558,13 +558,13 @@ function heirarchical_clustering() {
             for (var j = 0; j < count; j++) {
                 key = arr[i].pop();
                 sticky_position_change(key, pos_x, pos_y);
-                pos_y += 180;
-                if ((pos_y + 180) > height) {
+                pos_y += 230;
+                if ((pos_y + 230) > height) {
                     pos_y = 0;
-                    pos_x += 220;
+                    pos_x += 260;
                 }
             }
-            start_x = pos_x + 220;
+            start_x = pos_x + 260;
             start_y = 0;
             count = 0;
         }

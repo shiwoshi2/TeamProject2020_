@@ -41,6 +41,7 @@
 
 </head>
 <body>
+    <!-- add the svg -->
     <div class="container">
         <main role="main">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="sketchpad"
@@ -50,43 +51,45 @@
     </div>
 
             
-   
+   <!-- create the navbar -->
     <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light customnav "  >
         <div class="collapse navbar-collapse" >
             <ul class="navbar-nav mx-auto" >
                 <li class="nav-item dropup">
+                    <!-- create the hiden menu button -->
                     <button class="btn btn-default navbutton" id="menu" data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false">
                     <span class="navspan"  style="background: url(./images/menu.png) no-repeat;  background-size: 100%;" ></span>
                     </button>
-
+                    <!--create the button group  -->
                     <div class="dropdown-menu" aria-labelledby="menu">
                         <div class="btn-group">
+                    <!-- add note -->
                         <button class="btn  btn-default navbutton" id="addNote" >
                             <span class="navspan"  style="background: url(./images/icon-create.png) no-repeat;  background-size: 100%;" ></span>
                         </button>
-                    
+                    <!-- delete all note -->
                         <button class="btn  btn-default navbutton" id="removeAllNote" >
                             <span class="navspan"
                                 style="background: url(./images/icon-trash.png) no-repeat;  background-size: 100%;"></span>
                         </button>
-                
+                    <!-- search note -->
                         <button class="btn  btn-default navbutton" id="searchNote" >
                             <span class="navspan"
                                 style="background: url(./images/icon-search.png) no-repeat;  background-size: 100%;"></span>
                         </button>
-
+                    <!-- upload the saved json -->
                         <button class="btn btn-default navbutton"  onclick="upload()">
                             <span class="navspan"  style="background: url(./images/icon-upload.png) no-repeat;  background-size: 100%;" ></span>
                             <input type="file" id="files" style="display: none" onchange="fileImport();">
                         </button>
-
+                    <!-- downloud the curent notes -->
                         <button class="btn btn-default navbutton"  onclick="save()">
                             <span class="navspan"  style="background: url(./images/icon-download.png) no-repeat;  background-size: 100%;" ></span>
                         </button>
 
-                         
+                    <!-- clustering -->
                         <button class="btn btn-default" id="cluster">
                             <span class="navspan"  style="background: url(./images/icon-cluster.png) no-repeat;  background-size: 100%;" ></span>
                          </button>
@@ -127,6 +130,7 @@
         </div>
     
     </nav>
+    <!-- show the clustering menu -->
     <script type="text/javascript">
         $(function(){
             var a = $("#cluster");
@@ -137,7 +141,7 @@
         });
         
     </script>
-
+        <!-- save and download function -->
     <script type="text/javascript">
 
          function save() {
