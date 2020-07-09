@@ -547,8 +547,8 @@ function heirarchical_clustering() {
     var height = window.screen.height;
     var width = window.screen.width;
 
-    var pos_x = 0, pos_y = 0;
-    var start_x = 200, start_y = 0;
+    var pos_x = 80, pos_y = 20;
+    var start_x = 80, start_y = 20;
 
     for (var i = 0; i < 10; i++) {
         var count = arr[i].length;
@@ -561,11 +561,11 @@ function heirarchical_clustering() {
                 pos_y += 230;
                 if ((pos_y + 230) > height) {
                     pos_y = 0;
-                    pos_x += 260;
+                    pos_x += 250;
                 }
             }
-            start_x = pos_x + 260;
-            start_y = 0;
+            start_x = pos_x + 250;
+            start_y = 20;
             count = 0;
         }
     }
@@ -574,7 +574,7 @@ function heirarchical_clustering() {
 
 function searchSticky() {
 
-    var h = window.screen.height - 280;
+    var h = window.screen.height/2 + 100;
     var w = window.screen.width - 500;
     var input = document.createElement("input");
     input.setAttribute("id", "tbInputText");
@@ -743,11 +743,6 @@ function kmean_clustering() {
         kk++;
         all_dist_colors = [];
     }
-
-
-
-
-
 
 }
 
