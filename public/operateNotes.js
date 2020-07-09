@@ -548,7 +548,7 @@ function heirarchical_clustering() {
     var width = window.screen.width;
 
     var pos_x = 80, pos_y = 20;
-    var start_x = 80, start_y = 20;
+    var start_x = divOffset, start_y = 20;
 
     for (var i = 0; i < 10; i++) {
         var count = arr[i].length;
