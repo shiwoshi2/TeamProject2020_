@@ -11,8 +11,6 @@ function deleteNoteWithoutIO(key) {
 }
 
 function updateNoteWithoutIO(key = 0, values = []) {
-    console.log("addnote");
-    console.log(values[0]['color']);
     id = key;
     if (divLeft != 0) {
         divLeft += 260;
@@ -94,8 +92,6 @@ function updateNoteWithoutIO(key = 0, values = []) {
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
     document.body.appendChild(mainDiv);
-    console.log("bg "+contentDiv.style.backgroundColor);
-
     saveNoteWithoutIO(id);
 }
 function saveNoteWithoutIO(key) {
@@ -108,7 +104,6 @@ function saveNoteWithoutIO(key) {
     //array for text input lists
     var textValueList = [];
     //save text and peninput
-    //console.log("insave"+obj.childNodes[1].getAttribute("textInput"));
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
         value['text'] = obj.childNodes[1].innerText;
@@ -118,9 +113,7 @@ function saveNoteWithoutIO(key) {
         value['text'] = tempData[key];
     }
     var selectedColor = obj.childNodes[1].style.backgroundColor;
-    console.log("test"+selectedColor);
     selectedColor = colorRGBtoHex(selectedColor);
-    console.log("transfer"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;

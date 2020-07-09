@@ -9,7 +9,6 @@ var tempPenData = {};
 
 // Add sticky note
 function addNote(key = 0, values = []) {
-    console.log("add");
     textInputFlag = true;
     var id;
     if (key != 0) {
@@ -109,16 +108,6 @@ function addNote(key = 0, values = []) {
     penInput.setAttribute("class", "penInput");
     // Add note
     penInput.setAttribute("onclick", "penInput('" + id + "')");
-    // console.log("here2");
-    // penInput.onclick=function(penInput) {
-    //     // console.log("here");
-    //     // penInput("'" + id + "'");
-
-    //     // penInput.classList.toggle("text_execute");
-    //     document.querySelector("#" + id + " .penInput");
-    // document.getElementsByClassName
-    // }
-    // document.querySelector() 
     titleDiv.appendChild(penInput);
 
     var rotateNote = document.createElement("img");
@@ -164,7 +153,14 @@ function createTextContent(text,id,isText){
     contentDiv.style.height = 192+'px';
     return contentDiv;
 }
+var ongoingTouches = [];
 function mousedownHandler(e) {
+    // var touches = e.changedTouches;
+    // for(var i=0; i< touches.length;i++){
+    //     var touch = touches[i];
+    //     e = touch;
+    //
+    // }
 
     if (e.target.className == 'noteTitle') {
         //locate the note
@@ -180,15 +176,10 @@ function mousedownHandler(e) {
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
         document.addEventListener("touchmove", mousemoveHandler, false);
-        //dierctly way to do
-        //$('html,body').css('height', '100%').css('overflow', 'hidden');
-        //console.log(color.options.selectedIndex);
     }
     if (e.target.className == "noteContent") {
-        console.log("notecontent touched");
         var noteId = e.target.parentElement.getAttribute("id");
         dragObj = document.getElementById(noteId);
-        // changeColor(noteId);
         var t = dragObj.style.top;
         var l = dragObj.style.left;
         z += 1;
@@ -220,7 +211,6 @@ function mousedownHandler(e) {
             pathElement.setAttribute("d","M"+x+','+y+'L'+x+','+y);
             pathElement.setAttribute('stroke', 'black');
             pathElement.setAttribute('fill', 'none');
-            //console.log("svgtouched");
             svgContent.appendChild(pathElement);
             function touchMove(e)
             {
@@ -242,18 +232,14 @@ function mousedownHandler(e) {
     }
     if(e.target.className == 'rotateNote'){
         //source https://stackoverflow.com/questions/11051676/rotating-div-with-mouse-move
-        //console.log("rotate");
         var noteId = e.target.parentNode.parentNode.getAttribute("id");
         var obj = document.getElementById(noteId);
-        //obj.style.transform = "rotate(90deg)";
         //as width = 180, width = 170
         var rotateButton = obj.childNodes[0].childNodes[5];
         rotateButton.addEventListener("touchstart",function(e){
             e.preventDefault();
             var center_x =(obj.offsetLeft)+(90);
             var center_y = (obj.offsetTop)+ (85);
-            // var touch_x = e.targetTouches[0].pageX;
-            // var touch_y = e.targetTouches[0].pageY;
             function touchMove(e)
             {
                 var touch_x = e.targetTouches[0].clientX;
@@ -274,7 +260,6 @@ function mousedownHandler(e) {
 }
 
 function clearContent(key) {
-    console.log("clear");
     var obj = document.getElementById(key);
     var isText = obj.childNodes[1].getAttribute("textInput");
     if(isText=='true'){
@@ -293,7 +278,6 @@ function penInput(key) {
     obj.getElementsByClassName('penInput')[0].classList.toggle('text_execute');
     if(nodeName == "DIV"){
         var isTextInput = obj.childNodes[1].getAttribute("textInput");
-        console.log("pen "+isTextInput);
         if(isTextInput =="true"){
             console.log("switch to svg now");
             textTemp = obj.childNodes[1].innerText;
@@ -350,19 +334,15 @@ function saveNote(key) {
     }
 
     var selectedColor = obj.childNodes[1].style.backgroundColor;
-    console.log("test"+selectedColor);
     selectedColor = colorRGBtoHex(selectedColor);
-    console.log("transfer"+selectedColor);
     value['color'] = selectedColor;
     var notePositionLeft = obj.style.left;
     var notePositionTop = obj.style.top;
-    //console.log("notePosition " + notePositionLeft, notePositionTop);
     value['notePositionLeft'] = notePositionLeft.replace("px", "");
     value['notePositionTop'] = notePositionTop.replace("px", "");
     value['id'] = key;
     values.push(value);
     values = JSON.stringify(values);
-    console.log("in the save " +selectedColor);
     if (values.length > 0) {
         //save to storage
         localStorage.setItem(key, values);
@@ -387,12 +367,10 @@ function loadData(dataByUpload = false,uploadedData = []) {
                     localStorage.removeItem(d);
                 }
             }
-            console.log(d);
             addNote(Number(d), JSON.parse(dataTemp));
         }
 
     }else{
-        console.log("DATABYUPLOAD "+dataByUpload);
         for (var i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i);
             var values = localStorage.getItem(key);
@@ -403,7 +381,6 @@ function loadData(dataByUpload = false,uploadedData = []) {
 }
 //delete note
 function deleteNote(key) {
-    console.log(typeof key);
     broadcastMessage("delete",key);
     var obj = document.getElementById(key);
     obj.parentNode.removeChild(obj);
@@ -507,8 +484,6 @@ function heirarchical_clustering() {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
         var value = JSON.parse(values);
-        console.log(value[0]['color']== "#EF9A9A");
-
 
         if (value[0].color == "#EF9A9A") {
             arr[0].push(key);
@@ -542,7 +517,7 @@ function heirarchical_clustering() {
         }
 
     }
-    // console.log(arr[0].length);      
+
     // Get the dimensions of the screen
     var height = window.screen.height;
     var width = window.screen.width;
@@ -590,7 +565,6 @@ function searchSticky() {
     document.body.appendChild(input);
     input.addEventListener('keydown', function (event) {
         if (event.keyCode == 13) {
-            console.log("keydown");
             search_text = document.getElementById('tbInputText').value;
             document.getElementById("tbInputText").remove();
             move_position_sticky(search_text);
@@ -611,7 +585,6 @@ function move_position_sticky(search_text) {
     var sticky_key = 0;
     var original_x = 0, original_y = 0;
 
-    // console.log(search_text);
     for (var i = 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
         var values = localStorage.getItem(key);
@@ -649,7 +622,6 @@ function sticky_position_change(key, new_x, new_y) {
 }
 
 function kmean_clustering() {
-    console.log("kmean hit");
     // Array creation
     var arr = new Array(10);
     for (var i = 0; i < 10; i++) {
@@ -722,8 +694,7 @@ function kmean_clustering() {
     var kk = 0;
     while(kk<5){
         var all_dist_colors = kmean(sticky_positions, centroids, count, arr);
-        // console.log(sticky_positions);
-        // console.log(centroids);
+
 
         for (var i = 0; i < all_dist_colors.length; i++) {
             var x_avg = 0;
