@@ -1,3 +1,4 @@
+//ajust the svg base on the windows width and height
 function adjustToFreezeWidth(rootSvg) {
     var windowWidth =  parseInt(window.innerWidth);
     var windowHeight =  parseInt(window.innerWidth);
