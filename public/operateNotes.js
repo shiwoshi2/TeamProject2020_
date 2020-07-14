@@ -455,6 +455,10 @@ function init() {
     var btnColor = document.getElementById("kmean");
     btnColor.addEventListener("click", function () { kmean_clustering(); }, false);
 
+    // Adding event listener for clustering stickies based on color
+    var btnColor = document.getElementById("voronoi");
+    btnColor.addEventListener("click", function () { voronoi(); }, false);
+
 
     // Adding event listener for searching sticky based on color
     var btnSearchNote = document.getElementById("searchNote");
@@ -607,8 +611,8 @@ function move_position_sticky(search_text) {
         }
     }
     if (n != -1) {
-        var height = window.screen.height - 300;
-        var width = window.screen.width - 300;
+        var height = window.screen.height/2 + 100;
+        var width = window.screen.width - 500;
         document.getElementById(key).style.top = height + "px";
         document.getElementById(key).style.left = width + "px";
         var sticky = document.getElementById(key);
@@ -876,4 +880,70 @@ function cost_eval(ref_val, cluster_colors) {
     }
 
     return [check_for_swap, cost, temp_swap_index];
+}
+
+function voronoi(){
+        // Array creation
+        var arr = new Array(10);
+        for (var i = 0; i < 10; i++) {
+            arr[i] = new Array();
+        }
+    
+        // Count same colored stickies and store in array with sticky keys
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            var values = localStorage.getItem(key);
+            var value = JSON.parse(values);
+    
+            if (value[0].color == "#EF9A9A") {
+                arr[0].push(key);
+            }
+            else if (value[0].color == "#CE93D8") {
+                arr[1].push(key);
+            }
+            else if (value[0].color == "#81D4FA") {
+                arr[2].push(key);
+            }
+            else if (value[0].color == "#80CBC4") {
+                arr[3].push(key);
+            }
+            else if (value[0].color == "#C5E1A5") {
+                arr[4].push(key);
+            }
+            else if (value[0].color == "#FFF59D") {
+                arr[5].push(key);
+            }
+            else if (value[0].color == "#FFCC80") {
+                arr[6].push(key);
+            }
+            else if (value[0].color == "#BCAAA4") {
+                arr[7].push(key);
+            }
+            else if (value[0].color == "#F48FB1") {
+                arr[8].push(key);
+            }
+            else if (value[0].color == "#9FA8DA") {
+                arr[9].push(key);
+            }
+    
+        }
+        // Setting the initial values
+        var pos_x = 0, pos_y = 0;
+        var start_x = 0, start_y = 0;
+        for (var i = 0; i < 10; i++) {
+            var count = arr[i].length;
+    
+            if (count > 0) {
+                var temp = random_position();
+                start_x = temp[0];
+                start_y = temp[1];
+                pos_x = start_x, pos_y = start_y;
+                for (var j = 0; j < count; j++) {
+                    key = arr[i].pop();
+                    sticky_position_change(key, pos_x, pos_y);
+                    pos_x+=30;
+                    pos_y+=20;
+                }
+            }
+        }
 }
