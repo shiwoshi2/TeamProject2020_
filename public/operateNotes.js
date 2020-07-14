@@ -546,7 +546,7 @@ function heirarchical_clustering() {
                 sticky_position_change(key, pos_x, pos_y);
                 pos_y += 230;
                 if ((pos_y + 230) > height) {
-                    pos_y = 0;
+                    pos_y = 20;
                     pos_x += 250;
                 }
             }
