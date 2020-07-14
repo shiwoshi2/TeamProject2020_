@@ -91,6 +91,8 @@ function updateNoteWithoutIO(key = 0, values = []) {
     contentDiv.style.backgroundColor = values[0]['color'];
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
+    mainDiv.addEventListener("touchstart", mousedownHandler, {passive: false});
+    mainDiv.addEventListener("touchend", mouseupHandler, {passive: false});
     document.body.appendChild(mainDiv);
     saveNoteWithoutIO(id);
 }

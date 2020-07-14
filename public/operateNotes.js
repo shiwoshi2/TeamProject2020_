@@ -127,8 +127,11 @@ function addNote(key = 0, values = []) {
     // var numSpan = createNumSpan(values[0]["text"],inputLimit);
     mainDiv.appendChild(titleDiv);
     mainDiv.appendChild(contentDiv);
+    mainDiv.addEventListener("touchstart", mousedownHandler, {passive: false});
+    mainDiv.addEventListener("touchend", mouseupHandler, {passive: false});
     // mainDiv.appendChild(numSpan);
     document.body.appendChild(mainDiv);
+
     // limitInput(contentDiv,inputLimit);
     saveNoteWithoutIO(id);
     broadcastMessage("add",localStorage.getItem(id));
@@ -175,7 +178,7 @@ function mousedownHandler(e) {
         _startY = e.targetTouches[0].clientY;
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
-        document.addEventListener("touchmove", mousemoveHandler, false);
+        dragObj.addEventListener("touchmove", mousemoveHandler, false);
     }
     if (e.target.className == "noteContent") {
         var noteId = e.target.parentElement.getAttribute("id");
@@ -188,7 +191,7 @@ function mousedownHandler(e) {
         _startY = e.targetTouches[0].clientY;
         _offsetX = dragObj.offsetLeft;
         _offsetY = dragObj.offsetTop;
-        document.addEventListener("touchmove", mousemoveHandler, false);
+        dragObj.addEventListener("touchmove", mousemoveHandler, false);
     }
     if(e.target.getAttribute("class") == 'svgContent'){
         // //the svgContent id Idk why not change after touching other note so I use note id by finding parent parent id to locate the real svg content
@@ -410,13 +413,18 @@ function changeColor(id) {
 function mouseupHandler(e) {
     // //after moving it will save the note automatically
     //$('html,body').removeAttr('style');
-    document.removeEventListener("touchmove", mousemoveHandler, false);
+    var noteId = e.target.parentElement.getAttribute("id");
+    dragObj = document.getElementById(noteId);
+    dragObj.removeEventListener("mousemove", mousemoveHandler, false);
     saveNote(e.target.parentNode.id);
     //broadcastMessage("update",localStorage.getItem(e.target.parentNode.id));
     // document.removeEventListener("mousemove", mousemoveHandler, false);
 
 }
 function mousemoveHandler(e) {
+    e.preventDefault();
+    var noteId = e.target.parentElement.getAttribute("id");
+    dragObj = document.getElementById(noteId);
     dragObj.style.left = (_offsetX + e.targetTouches[0].clientX - _startX) + 'px';
     dragObj.style.top = (_offsetY + e.targetTouches[0].clientY - _startY) + 'px';
 
@@ -456,8 +464,7 @@ function init() {
 
     loadData();
     // Add event listeners
-    document.addEventListener("touchstart", mousedownHandler, false);
-    document.addEventListener("touchend", mouseupHandler, false);
+
 }
 
 
