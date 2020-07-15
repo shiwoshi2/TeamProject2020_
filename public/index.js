@@ -3,7 +3,7 @@ var svgNS = "http://www.w3.org/2000/svg";
 var socket = io();
 var displaySize = window.screen.width;
 var divOffset = 50;
-
+var colorIndex = ["#EF9A9A", "#CE93D8", "#81D4FA", "#80CBC4", "#C5E1A5", "#FFF59D", "#FFCC80", "#BCAAA4", "#F48FB1", "#9FA8DA"];
 //compute in every eqiupment the note offset
 function NoteOffset(device){
     if (device == "wall")

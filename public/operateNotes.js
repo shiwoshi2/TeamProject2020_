@@ -92,7 +92,8 @@ function addNote(key = 0, values = []) {
     colorBg.options.add(new Option("", "#F48FB1"));
     colorBg.options.add(new Option("", "#9FA8DA"));
     colorBg.setAttribute("onclick", "changeColor('" + id + "')");
-
+    colorBg.options.selectedIndex = colorIndex.indexOf(values[0]['color']);
+    
     titleDiv.appendChild(colorBg);
 
     // Save button
